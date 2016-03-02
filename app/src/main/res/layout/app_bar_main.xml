@@ -30,13 +30,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/film_title_bg"
                 app:layout_collapseMode="parallax"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed" />
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" />
+                app:layout_collapseParallaxMultiplier="0.6" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -49,7 +43,28 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--
+        android design library提供的TabLayout控件
+        tabIndicatorColor：菜单下方移动的横线的颜色
+        tabSelectedTextColor ：菜单被选中之后的颜色
+        tabTextColor : 菜单正常的颜色
+        app:tabTextAppearance : 添加样式，这里加了样式主要是为了在文字前面加一个图所用，就是把textAllCaps设置成false
+        -->
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="#404040"
+            android:layout_alignParentBottom="true" />
+        <include layout="@layout/content_main" />
+    </LinearLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
