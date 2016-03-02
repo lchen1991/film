@@ -4,17 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class AdapterBase<T> extends BaseAdapter {
+public abstract class AdapterBase<T> extends RecyclerView.Adapter<ViewHolderBase> {
 
 	protected Context mContext;
 	protected List<T> mList = new LinkedList<T>();
 
-	public AdapterBase(Context mContext) {
-		this.mContext = mContext;
+	public AdapterBase() {
 	}
 
 	public List<T> getList() {
@@ -76,26 +76,8 @@ public abstract class AdapterBase<T> extends BaseAdapter {
 	}
 
 	@Override
-	public int getCount() {
-		return mList.size();
-	}
-
-	@Override
-	public Object getItem(int position) {
-		if (position > mList.size() - 1) {
-			return null;
-		}
-		return mList.get(position);
-	}
-
-	@Override
 	public long getItemId(int position) {
 		return position;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		return getExView(position, convertView, parent);
 	}
 
 	protected abstract View getExView(int position, View convertView,

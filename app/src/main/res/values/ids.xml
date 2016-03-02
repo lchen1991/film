@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="ll_error_info" type="id"/>
+    <item name="iv_error_info_title" type="id"/>
+    <item name="iv_error_info_message" type="id"/>
+    <item name="iv_error_info_icon" type="id"/>
+
+    <!-- pulltorefresh start -->
+    <item name="gridview" type="id"/>
+    <item name="webview" type="id"/>
+    <item name="scrollview" type="id"/>
+    <item name="linearLayout" type="id"/>
+    <!-- pulltorefresh end -->
+
+</resources>

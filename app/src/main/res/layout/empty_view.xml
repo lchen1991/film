@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ll_error_info"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".activity.BaseActivity" >
+
+    <TextView
+        android:id="@id/iv_error_info_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/empty_view_margin_top"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="no_data_found"
+        android:textColor="#ff999999"
+        android:textSize="22.5dip" />
+
+    <TextView
+        android:id="@id/iv_error_info_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16.5dip"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="no_data_found"
+        android:textColor="#ffb4b4b4"
+        android:textSize="16.5dip" />
+
+    <ImageView
+        android:id="@id/iv_error_info_icon"
+        android:layout_width="145.5dip"
+        android:layout_height="161.5dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="27.0dip" />
+
+</LinearLayout>

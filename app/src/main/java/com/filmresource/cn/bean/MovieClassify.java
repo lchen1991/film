@@ -3,7 +3,7 @@ package com.filmresource.cn.bean;
 import java.io.Serializable;
 
 
-public class MovieClassify implements Serializable{
+public class MovieClassify extends  BaseEntity{
 
 	/**
 	 * 

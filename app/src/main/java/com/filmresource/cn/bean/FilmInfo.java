@@ -3,7 +3,7 @@ package com.filmresource.cn.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class FilmInfo implements Serializable{
+public class FilmInfo extends  BaseEntity{
 
 	/**
 	 * 

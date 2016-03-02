@@ -3,7 +3,7 @@ package com.filmresource.cn.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class HomePageInfo implements Serializable{
+public class HomePageInfo extends BaseEntity{
 
 	/**
 	 * 
