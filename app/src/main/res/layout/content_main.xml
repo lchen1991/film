@@ -28,9 +28,6 @@
         <!--tools:context="com.filmresource.cn.MainActivity"-->
         <!--android:orientation="vertical"-->
         <!--tools:showIn="@layout/app_bar_main">-->
-
-        <!-- -->
-
     <!--</LinearLayout>-->
 
 <!--</LinearLayoutandroid.support.v4.widget.NestedScrollView>-->
