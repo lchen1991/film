@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -92,10 +93,6 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        tabLayout.addTab(tabLayout.newTab().setText("xxxxx"));
-        tabLayout.addTab(tabLayout.newTab().setText("222222"));
-        tabLayout.addTab(tabLayout.newTab().setText("3333333"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -210,14 +207,17 @@ public class MainActivity extends BaseActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                List<MovieClassify> movieClassifies = btHomePageInfo.getMovieClassifys();
+                for (MovieClassify movieClassify:movieClassifies)
+                {
+                    tabLayout.addTab(tabLayout.newTab().setText(Html.fromHtml(movieClassify.getClassify())));
+                }
+
                 List<FilmInfo> filmInfos = btHomePageInfo.getFilmMapList().get(BTHOMEPAGE_FILMINFOLIST);
                 filmAdapter.appendToList(filmInfos);
 
-//                List<MovieClassify> movieClassifies = btHomePageInfo.getMovieClassifys();
-//                for (MovieClassify movieClassify:movieClassifies)
-//                {
-//                    tabLayout.addTab(tabLayout.newTab().setText(movieClassify.getClassify()));
-//                }
             }
         });
     }
