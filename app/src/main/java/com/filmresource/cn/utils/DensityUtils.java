@@ -1,4 +1,4 @@
-package com.base.app.utils;
+package com.filmresource.cn.utils;
 
 import android.content.Context;
 import android.util.TypedValue;

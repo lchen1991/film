@@ -46,7 +46,6 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 
 	@Override
 	protected void onDestroy() {
-		Fresco.shutDown();
 		mApplication.removeActivity(this);
 		super.onDestroy();
 	}

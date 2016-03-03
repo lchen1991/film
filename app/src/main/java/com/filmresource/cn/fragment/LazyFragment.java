@@ -1,9 +1,14 @@
 package com.filmresource.cn.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.filmresource.cn.R;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class LazyFragment extends BaseFragment {
@@ -21,9 +26,6 @@ public abstract class LazyFragment extends BaseFragment {
      * 在这里实现Fragment数据的缓加载.
      * @param isVisibleToUser
      */
-
-
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

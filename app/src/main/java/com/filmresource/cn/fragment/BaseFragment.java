@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.filmresource.cn.R;
 import com.filmresource.cn.bean.BaseUI;
 
-public class BaseFragment extends Fragment implements BaseUI {
+public abstract class BaseFragment extends Fragment implements BaseUI {
 
 	protected FragmentActivity mContext;
 
@@ -22,7 +22,18 @@ public class BaseFragment extends Fragment implements BaseUI {
 	}
 
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setUpView();
+	}
+
+	@Override
 	public void onUICallback(int type, Object object) {
 
 	}
+
+	/**
+	 * 设置属性，监听等
+	 */
+	protected abstract void setUpView();
 }

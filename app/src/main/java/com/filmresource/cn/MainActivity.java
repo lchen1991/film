@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
 import android.widget.GridView;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
@@ -31,13 +37,20 @@ import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.adapter.FilmAdapter;
+import com.filmresource.cn.adapter.FragmentTabAdapter;
 import com.filmresource.cn.bean.BtHomePageInfo;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.bean.MovieClassify;
 import com.filmresource.cn.common.Constant;
+import com.filmresource.cn.global.BaseApplication;
+import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
+import com.filmresource.cn.utils.LogUtil;
+import com.filmresource.cn.utils.ToastUtil;
 import com.filmresource.cn.widget.ShimmerFrameLayout;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -49,39 +62,18 @@ import static com.filmresource.cn.bean.BtHomePageInfo.BTHOMEPAGE_FILMINFOLIST;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OssResultListener {
 
-    private OSS oss;
-
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    private FilmAdapter filmAdapter;
-
     @Bind(R.id.tabs)
     TabLayout tabLayout;
+    @Bind(R.id.filmPage_main)
+    ViewPager viewPager;
 
-    //@Bind(R.id.shimmer_layout)
-    //ShimmerFrameLayout shimmerFrameLayout;
-
-    private void initAliOss() {
-        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider(Constant.accessKeyId, Constant.accessKeySecret);
-
-        ClientConfiguration conf = new ClientConfiguration();
-
-        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
-        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
-        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
-        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-        OSSLog.enableLog();
-        oss = new OSSClient(getApplicationContext(), Constant.endpoint, credentialProvider, conf);
-
-
-    }
 
     @OnClick(R.id.fab)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                Snackbar.make(view, "Replace with your own adapterction", Snackbar.LENGTH_LONG)
+                       .setAction("Action", null).show();
                 break;
         }
     }
@@ -119,23 +111,8 @@ public class MainActivity extends BaseActivity
 //            }
 //        });
 
-//        recyclerView.addItemDecoration(new MarginDecoration(this));
-
-        filmAdapter = new FilmAdapter(this);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setAdapter(filmAdapter);
-        initAliOss();
-
-        OssGetObjectData getObjectSamples = new OssGetObjectData(oss, "bttiantang", "homePage", this);
-        getObjectSamples.asyncGetObjectSample();
-
-
-//        Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/fresco-logo.png");
-//        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
-//        draweeView.setImageURI(uri);
-
-
+          OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
+          getObjectSamples.asyncGetObjectSample();
     }
 
     @Override
@@ -150,7 +127,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -207,26 +183,32 @@ public class MainActivity extends BaseActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
                 List<MovieClassify> movieClassifies = btHomePageInfo.getMovieClassifys();
+                List<Fragment> fragments = new ArrayList<Fragment>();
+                List<String> mClassifys = new ArrayList<String>();
                 for (MovieClassify movieClassify:movieClassifies)
                 {
                     tabLayout.addTab(tabLayout.newTab().setText(Html.fromHtml(movieClassify.getClassify())));
+                    fragments.add(FilmListFragment.getInstance(movieClassify.getClassify()));
+                    mClassifys.add(movieClassify.getClassify());
+                    LogUtil.e("info",movieClassify.getClassify());
                 }
-
-                List<FilmInfo> filmInfos = btHomePageInfo.getFilmMapList().get(BTHOMEPAGE_FILMINFOLIST);
-                filmAdapter.appendToList(filmInfos);
-
+                FragmentTabAdapter fragmentTabAdapter = new FragmentTabAdapter(getSupportFragmentManager(),mClassifys,fragments);
+                viewPager.setAdapter(fragmentTabAdapter);
+                tabLayout.setupWithViewPager(viewPager);
             }
         });
     }
 
+    @Override
+    public void onFailure() {
+        ToastUtil.showLong(this,"加载失败！");
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
 //        boolean isPlaying = shimmerFrameLayout.isAnimationStarted();
 //        // Reset all parameters of the shimmer animation
 //        shimmerFrameLayout.useDefaults();

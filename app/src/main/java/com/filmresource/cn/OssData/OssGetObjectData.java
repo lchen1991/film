@@ -24,21 +24,21 @@ import java.io.InputStreamReader;
 public class OssGetObjectData {
 
     private OSS oss;
-    private String testBucket;
-    private String testObject;
+    private String mBucket;
+    private String mObject;
     private OssResultListener ossResultListener;
 
-    public OssGetObjectData(OSS client, String testBucket, String testObject,OssResultListener ossResultListener) {
+    public OssGetObjectData(OSS client, String mBucket, String mObject,OssResultListener ossResultListener) {
         this.oss = client;
-        this.testBucket = testBucket;
-        this.testObject = testObject;
+        this.mBucket = mBucket;
+        this.mObject = mObject;
         this.ossResultListener =ossResultListener;
     }
 
     public void getObjectSample() {
 
         // 构造下载文件请求
-        GetObjectRequest get = new GetObjectRequest(testBucket, testObject);
+        GetObjectRequest get = new GetObjectRequest(mBucket, mObject);
 
         try {
             // 同步执行下载请求，返回结果
@@ -79,64 +79,67 @@ public class OssGetObjectData {
 
     public void asyncGetObjectSample() {
 
-        GetObjectRequest get = new GetObjectRequest(testBucket, testObject);
-
-        OSSAsyncTask task = oss.asyncGetObject(get, new OSSCompletedCallback<GetObjectRequest, GetObjectResult>() {
-            
-            @Override
-            public void onSuccess(GetObjectRequest request, GetObjectResult result) {
-                // 请求成功
-                InputStream inputStream = result.getObjectContent();
-
+        GetObjectRequest get = new GetObjectRequest(mBucket, mObject);
+        if(oss == null)
+        {
+            ossResultListener.onFailure();
+        }
+       else
+        {
+            OSSAsyncTask task = oss.asyncGetObject(get, new OSSCompletedCallback<GetObjectRequest, GetObjectResult>() {
+                @Override
+                public void onSuccess(GetObjectRequest request, GetObjectResult result) {
+                    // 请求成功
+                    InputStream inputStream = result.getObjectContent();
 //                byte[] buffer = new byte[2048];
 //                int len;
-
-                try {
+                    try {
 //                    while ((len = inputStream.read(buffer)) != -1) {
 //                        // 处理下载的数据
 //                        Log.d("asyncGetObjectSample", "read length: " + len);
 //                    }
-                    displayTextInputStream(inputStream);
-                    Log.d("asyncGetObjectSample", "download success.");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        displayTextInputStream(inputStream);
+                        Log.d("asyncGetObjectSample", "download success.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                // 请求异常
-                if (clientExcepion != null) {
-                    // 本地异常如网络异常等
-                    clientExcepion.printStackTrace();
+                @Override
+                public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                    // 请求异常
+                    if (clientExcepion != null) {
+                        // 本地异常如网络异常等
+                        clientExcepion.printStackTrace();
+                    }
+                    if (serviceException != null) {
+                        // 服务异常
+                        Log.e("ErrorCode", serviceException.getErrorCode());
+                        Log.e("RequestId", serviceException.getRequestId());
+                        Log.e("HostId", serviceException.getHostId());
+                        Log.e("RawMessage", serviceException.getRawMessage());
+                    }
                 }
-                if (serviceException != null) {
-                    // 服务异常
-                    Log.e("ErrorCode", serviceException.getErrorCode());
-                    Log.e("RequestId", serviceException.getRequestId());
-                    Log.e("HostId", serviceException.getHostId());
-                    Log.e("RawMessage", serviceException.getRawMessage());
-                }
-            }
-        });
+            });
+        }
+
     }
 
     private  void displayTextInputStream(InputStream input) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        StringBuffer sb = new StringBuffer();
         while (true) {
             String line = reader.readLine();
             if (line == null) break;
-            System.out.println("\t" + line);
-            ossResultListener.onResult(line);
+            sb.append(line);
         }
-        System.out.println();
-
+        ossResultListener.onResult(sb.toString());
         reader.close();
     }
 
     public void asyncGetObjectRangeSample() {
 
-        GetObjectRequest get = new GetObjectRequest(testBucket, testObject);
+        GetObjectRequest get = new GetObjectRequest(mBucket, mObject);
 
         // 设置范围
         get.setRange(new Range(0, 99)); // 下载0到99共100个字节，文件范围从0开始计算

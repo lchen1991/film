@@ -19,4 +19,7 @@ public class Constant {
 	public static String accessKeyId = "ubuSFRjBoEkKJgfC";
 	public static String accessKeySecret = "SIVkFeOyOFGWZ9syuDCrni4mxWBavb";
 
+	public static String bucket = "bttiantang";
+	public static String bucketObj = "homePage";
+
 }
