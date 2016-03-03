@@ -2,10 +2,14 @@ package com.filmresource.cn.ui.FilmFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.ServiceException;
 import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.R;
@@ -41,6 +45,7 @@ public  class FilmListFragment extends LazyFragment {
     private Gson gson = new Gson();
     private List<FilmInfo> filmInfos = null;
     private Handler handler = new Handler();
+    private  OssGetObjectData ossGetObjectData;
 
     public static FilmListFragment getInstance(String href)
     {
@@ -58,14 +63,18 @@ public  class FilmListFragment extends LazyFragment {
     @Override
     protected void onLazyLoad() {
 
-        swipeRefreshLayout.setProgressViewOffset(false, 0, DensityUtils.dp2px(mContext, 24));
-        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
         Bundle bundle = getArguments();
         if(bundle!=null)
         {
             String href =  bundle.getString("href");
             String mObjHref = Constant.bucketObj + "&" +href;
-            OssGetObjectData ossGetObjectData = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket,mObjHref,new OssResultListener()
+            ossGetObjectData = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket,mObjHref,new OssResultListener()
             {
                 @Override
                 public void onResult(final String data) {
@@ -73,7 +82,12 @@ public  class FilmListFragment extends LazyFragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            swipeRefreshLayout.setRefreshing(false);
+                            swipeRefreshLayout.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
+                            }, 600);
                             filmInfos = gson.fromJson(data, new TypeToken<List<FilmInfo>>() {
                             }.getType());
                             filmAdapter.appendToList(filmInfos);
@@ -83,14 +97,30 @@ public  class FilmListFragment extends LazyFragment {
                 }
 
                 @Override
-                public void onFailure() {
-                    handler.post(new Runnable() {
+                public void onFailure(ClientException clientExcepion, ServiceException serviceException) {
+                    swipeRefreshLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             swipeRefreshLayout.setRefreshing(false);
-                            ToastUtil.showLong(mContext, "数据获取失败！");
                         }
-                    });
+                    }, 600);
+                    // 请求异常
+                    if (clientExcepion != null) {
+                        // 本地异常如网络异常等
+                        clientExcepion.printStackTrace();
+                        Snackbar.make(mainView, "网络连接失败!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+
+                    }
+                    if (serviceException != null) {
+                        // 服务异常
+                        Log.e("ErrorCode", serviceException.getErrorCode());
+                        Log.e("RequestId", serviceException.getRequestId());
+                        Log.e("HostId", serviceException.getHostId());
+                        Log.e("RawMessage", serviceException.getRawMessage());
+                        Snackbar.make(mainView, "未知异常!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             });
             ossGetObjectData.asyncGetObjectSample();
@@ -106,6 +136,12 @@ public  class FilmListFragment extends LazyFragment {
         recyclerView.setAdapter(filmAdapter);
         swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
                 R.color.holo_orange_light, R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ossGetObjectData.asyncGetObjectSample();
+            }
+        });
     }
 
 

@@ -2,18 +2,20 @@ package com.filmresource.cn.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.filmresource.cn.R;
+import com.filmresource.cn.utils.LogUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class LazyFragment extends BaseFragment {
 
-    private View mainView;
+    protected View mainView;
 
     /** 标志位，标志已经初始化完成 */
     private boolean isPrepared;
@@ -79,4 +81,10 @@ public abstract class LazyFragment extends BaseFragment {
     protected abstract void onLazyLoad();
 
     protected void onInvisible(){}
+
+    @Override
+    public void onDestroyView() {
+        mHasLoadedOnce = false ;
+        super.onDestroyView();
+    }
 }

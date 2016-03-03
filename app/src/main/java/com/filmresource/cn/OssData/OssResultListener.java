@@ -6,5 +6,5 @@ import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 
 public  interface  OssResultListener {
         void onResult(String s);
-        void onFailure();
+        void onFailure(ClientException clientExcepion, ServiceException serviceException);
     }

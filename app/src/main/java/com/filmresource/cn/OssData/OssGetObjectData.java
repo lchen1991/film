@@ -82,7 +82,7 @@ public class OssGetObjectData {
         GetObjectRequest get = new GetObjectRequest(mBucket, mObject);
         if(oss == null)
         {
-            ossResultListener.onFailure();
+            ossResultListener.onFailure(null,null);
         }
        else
         {
@@ -119,6 +119,7 @@ public class OssGetObjectData {
                         Log.e("HostId", serviceException.getHostId());
                         Log.e("RawMessage", serviceException.getRawMessage());
                     }
+                    ossResultListener.onFailure(clientExcepion,serviceException);
                 }
             });
         }
