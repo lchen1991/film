@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +25,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.GridView;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.common.OSSLog;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
@@ -111,6 +115,7 @@ public class MainActivity extends BaseActivity
 //            }
 //        });
 
+
           OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
           getObjectSamples.asyncGetObjectSample();
     }
@@ -187,14 +192,14 @@ public class MainActivity extends BaseActivity
                 List<MovieClassify> movieClassifies = btHomePageInfo.getMovieClassifys();
                 List<Fragment> fragments = new ArrayList<Fragment>();
                 List<String> mClassifys = new ArrayList<String>();
-                for (MovieClassify movieClassify:movieClassifies)
-                {
+                for (MovieClassify movieClassify : movieClassifies) {
                     tabLayout.addTab(tabLayout.newTab().setText(Html.fromHtml(movieClassify.getClassify())));
                     fragments.add(FilmListFragment.getInstance(movieClassify.getClassify()));
                     mClassifys.add(movieClassify.getClassify());
-                    LogUtil.e("info",movieClassify.getClassify());
+                    LogUtil.e("info", movieClassify.getClassify());
                 }
-                FragmentTabAdapter fragmentTabAdapter = new FragmentTabAdapter(getSupportFragmentManager(),mClassifys,fragments);
+                FragmentTabAdapter fragmentTabAdapter = new FragmentTabAdapter(getSupportFragmentManager(),
+                        movieClassifies,fragments);
                 viewPager.setAdapter(fragmentTabAdapter);
                 tabLayout.setupWithViewPager(viewPager);
             }
@@ -202,32 +207,24 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onFailure() {
-        ToastUtil.showLong(this,"加载失败！");
+    public void onFailure(ClientException clientExcepion, ServiceException serviceException) {
+        // 请求异常
+        if (clientExcepion != null) {
+            // 本地异常如网络异常等
+            clientExcepion.printStackTrace();
+            Snackbar.make(viewPager, "网络连接失败!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+        }
+        if (serviceException != null) {
+            // 服务异常
+            Log.e("ErrorCode", serviceException.getErrorCode());
+            Log.e("RequestId", serviceException.getRequestId());
+            Log.e("HostId", serviceException.getHostId());
+            Log.e("RawMessage", serviceException.getRawMessage());
+            Snackbar.make(viewPager, "未知异常!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        boolean isPlaying = shimmerFrameLayout.isAnimationStarted();
-//        // Reset all parameters of the shimmer animation
-//        shimmerFrameLayout.useDefaults();
-//        shimmerFrameLayout.setDuration(5000);
-//        shimmerFrameLayout.setRepeatMode(ObjectAnimator.REVERSE);
-//        if (isPlaying) {
-//            shimmerFrameLayout.startShimmerAnimation();
-//        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        shimmerFrameLayout.startShimmerAnimation();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // shimmerFrameLayout.stopShimmerAnimation();
-    }
 }

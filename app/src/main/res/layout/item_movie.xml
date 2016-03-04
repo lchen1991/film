@@ -6,11 +6,17 @@
     android:layout_height="wrap_content"
     >
 
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+        <!--android:id="@+id/my_image_view"-->
+        <!--android:layout_width="90dip"-->
+        <!--android:layout_height="120dip"-->
+        <!--android:layout_gravity="center" />-->
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/my_image_view"
         android:layout_width="90dip"
         android:layout_height="120dip"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"/>
 
     <!--#88000000-->
     <TextView

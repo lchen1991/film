@@ -14,7 +14,6 @@ import com.filmresource.cn.adapter.base.ViewHolderBase;
 import com.filmresource.cn.bean.FilmInfo;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by chenlei on 16/3/1.
