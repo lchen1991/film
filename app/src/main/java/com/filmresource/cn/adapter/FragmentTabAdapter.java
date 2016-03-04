@@ -22,7 +22,6 @@ public class FragmentTabAdapter extends FragmentStatePagerAdapter {
     private List<MovieClassify> tabs ;                            //tab名的列表
     private List<Fragment> mFragments ;
 
-
     public FragmentTabAdapter(FragmentManager fm,List<MovieClassify> tabs,List<Fragment> mFragments) {
         super(fm);
         this.tabs = tabs;
