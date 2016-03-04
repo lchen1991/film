@@ -57,9 +57,12 @@ public  class FilmListFragment extends LazyFragment {
 
     @Override
     protected void onLazyLoad() {
-
-        swipeRefreshLayout.setProgressViewOffset(false, 0, DensityUtils.dp2px(mContext, 24));
-        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
         Bundle bundle = getArguments();
         if(bundle!=null)
         {
@@ -73,7 +76,14 @@ public  class FilmListFragment extends LazyFragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            swipeRefreshLayout.setRefreshing(false);
+
+                            swipeRefreshLayout.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
+                            });
+
                             filmInfos = gson.fromJson(data, new TypeToken<List<FilmInfo>>() {
                             }.getType());
                             filmAdapter.appendToList(filmInfos);
@@ -106,6 +116,7 @@ public  class FilmListFragment extends LazyFragment {
         recyclerView.setAdapter(filmAdapter);
         swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
                 R.color.holo_orange_light, R.color.holo_red_light);
+
     }
 
 

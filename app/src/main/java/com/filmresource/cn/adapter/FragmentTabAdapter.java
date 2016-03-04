@@ -3,6 +3,7 @@ package com.filmresource.cn.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class FragmentTabAdapter extends FragmentPagerAdapter {
         return list_Title.size();
     }
 
+    @Override
+     public int getItemPosition(Object object) {
+             return PagerAdapter.POSITION_NONE;
+         }
     @Override
     public CharSequence getPageTitle(int position) {
         return list_Title.get(position);
