@@ -1,18 +1,22 @@
 package com.filmresource.cn.ui.FilmFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.R;
+import com.filmresource.cn.ScrollingActivity;
 import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.adapter.FilmAdapter;
 import com.filmresource.cn.bean.FilmInfo;
@@ -139,6 +143,24 @@ public  class FilmListFragment extends LazyFragment {
             @Override
             public void onRefresh() {
                 ossGetObjectData.asyncGetObjectSample();
+            }
+        });
+        filmAdapter.setOnRecyclerViewItemClick(new FilmAdapter.onRecyclerViewItemClick() {
+            @Override
+            public void setOnItemClick(View v, FilmInfo filmInfo) {
+
+                if(TextUtils.isEmpty(filmInfo.getFimHref()))
+                {
+                    Snackbar.make(mainView, "资源不存在!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(mContext,ScrollingActivity.class);
+                    intent.putExtra("filminfo",filmInfo);
+                    startActivity(intent);
+                }
+
             }
         });
     }

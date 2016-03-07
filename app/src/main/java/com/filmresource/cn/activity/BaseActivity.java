@@ -10,8 +10,12 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.model.OSSRequest;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.filmresource.cn.OssData.OssResultListenerX;
 import com.filmresource.cn.R;
 import com.filmresource.cn.bean.BaseUI;
 import com.filmresource.cn.common.Constant;
@@ -69,5 +73,5 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 	@Override
 	public void onUICallback(int type, Object object) {
 	}
-	
+
 }

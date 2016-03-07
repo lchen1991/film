@@ -3,34 +3,61 @@ package com.filmresource.cn.activity;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.GetObjectRequest;
+import com.alibaba.sdk.android.oss.model.OSSRequest;
+import com.filmresource.cn.OssData.OssLoadControler;
+import com.filmresource.cn.OssData.OssResultListenerX;
 import com.filmresource.cn.common.Constant;
+import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.net.manager.LoadControler;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.manager.RequestManager.RequestListener;
 import com.filmresource.cn.utils.LogUtil;
+import com.google.gson.Gson;
 
-public class NetBaseActivity extends BaseActivity implements RequestListener {
+public class NetBaseActivity extends BaseActivity implements RequestListener,OssResultListenerX{
 
 	public HashMap<Integer, LoadControler> requests = null;
+	private Map<Integer,OSSAsyncTask> mOssAsynTaskMap = null;
+	private  GetObjectRequest get;
+	protected Gson gson = new Gson();
 
 	@SuppressLint("UseSparseArrays")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requests = new HashMap<Integer, LoadControler>();
+		mOssAsynTaskMap = new HashMap<Integer,OSSAsyncTask>();
 		super.onCreate(savedInstanceState);
-		
 	}
 
 	@Override
 	protected void onDestroy() {
 		if (requests != null && requests.size() > 0) {
-			Collection<LoadControler> loadControlers = requests.values();
-			for (LoadControler loadControler : loadControlers) {
+			Set<Integer> netkeys = requests.keySet();
+			for (Integer key:netkeys)
+			{
+				LoadControler loadControler = requests.get(key);
 				loadControler.cancel();
+				requests.remove(loadControler);
+			}
+		}
+		if (mOssAsynTaskMap!=null&&mOssAsynTaskMap.size() > 0)
+		{
+			Set<Integer> osskeys = mOssAsynTaskMap.keySet();
+			for (Integer key:osskeys)
+			{
+				OSSAsyncTask ossAsyncTask = mOssAsynTaskMap.get(key);
+				ossAsyncTask.cancel();
+				requests.remove(ossAsyncTask);
 			}
 		}
 		super.onDestroy();
@@ -119,5 +146,41 @@ public class NetBaseActivity extends BaseActivity implements RequestListener {
 			url += sb.toString();
 		}
 		return url;
-	}  
+	}
+
+	public void asyncGetObject(int actionId,String mBucket,String mObject) {
+		if(get == null)
+		{
+			get = new GetObjectRequest(mBucket, mObject);
+		}
+		if(BaseApplication.oss == null)
+		{
+			return;
+		}
+		OSSAsyncTask ossAsyncTask = mOssAsynTaskMap.get(actionId);
+		if(ossAsyncTask!=null)
+		{
+			ossAsyncTask.cancel();
+		}
+		ossAsyncTask = BaseApplication.oss.asyncGetObject(get, new OssLoadControler(actionId, this));
+		mOssAsynTaskMap.put(actionId,ossAsyncTask);
+	}
+
+	@Override
+	public void onOssSuccess(Object response, int actionId) {
+
+	}
+
+	@Override
+	public void onOssError(OSSRequest ossRequest, ClientException e, ServiceException e1) {
+
+	}
+
+	@Override
+	public void onOssFinish(int actionId) {
+		if(mOssAsynTaskMap.containsKey(actionId))
+		{
+			mOssAsynTaskMap.remove(actionId);
+		}
+	}
 }

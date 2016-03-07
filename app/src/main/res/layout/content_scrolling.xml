@@ -1,17 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.chenlei.myapplication.ScrollingActivity"
-    tools:showIn="@layout/activity_scrolling">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/detail_bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dip"
-        android:text="t" />
+        android:orientation="horizontal"
+        android:background="#eeeeee"
+        android:padding="6dp"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:padding="6dp"
+            android:gravity="center"
+            android:text="分享"
+            android:textSize="16dip"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:padding="6dp"
+            android:gravity="center"
+            android:text="收藏"
+            android:textSize="16dip"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="下载"
+            android:textSize="16dip"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="评分"
+            android:textSize="16dip"/>
+    </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/detail_bottom"
+        tools:showIn="@layout/activity_scrolling">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="8dip">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/my_image_view"
+                        android:layout_width="90dip"
+                        android:layout_height="120dip"
+                        app:layout_anchor="@id/app_bar"
+                        app:layout_anchorGravity="bottom|start"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/filmName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dip"
+                        android:layout_margin="2dip"/>
+
+                    <TextView
+                        android:id="@+id/filmClassify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dip"
+                        android:layout_margin="2dip"/>
+                    <TextView
+                        android:id="@+id/filmZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dip"
+                        android:layout_margin="2dip"/>
+
+                    <TextView
+                        android:id="@+id/filmScreensTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dip"
+                        android:layout_margin="2dip"/>
+
+                    <TextView
+                        android:id="@+id/filmDirector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dip"
+                        android:textSize="16dip"/>
+
+                    <TextView
+                        android:id="@+id/filmScreenWriter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dip"
+                        android:textSize="16dip"/>
+
+                    <TextView
+                        android:id="@+id/filmStarred"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dip"
+                        android:textSize="16dip"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/downloadlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:text="下载"
+                    android:textSize="16dip"/>
+            </LinearLayout>
+            </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

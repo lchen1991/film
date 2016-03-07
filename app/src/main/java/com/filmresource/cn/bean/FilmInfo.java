@@ -1,6 +1,7 @@
 package com.filmresource.cn.bean;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FilmInfo extends  BaseEntity{
@@ -24,7 +25,7 @@ public class FilmInfo extends  BaseEntity{
 	private String filmPoster;// 电影海报
 	private String filmSynopsis;// 电影简介
 	private String filmScore;
-	private List<String> torrentDownloadList;
+	private LinkedHashMap<String,String> torrentDownloadList;
 
 	public String getFilmName() {
 		return filmName;
@@ -130,13 +131,6 @@ public class FilmInfo extends  BaseEntity{
 		this.filmScore = filmScore;
 	}
 
-	public List<String> getTorrentDownloadList() {
-		return torrentDownloadList;
-	}
-
-	public void setTorrentDownloadList(List<String> torrentDownloadList) {
-		this.torrentDownloadList = torrentDownloadList;
-	}
 
 	public String getFilmDirector() {
 		return filmDirector;
@@ -154,4 +148,13 @@ public class FilmInfo extends  BaseEntity{
 		this.filmScreenWriter = filmScreenWriter;
 	}
 
+	public LinkedHashMap<String, String> getTorrentDownloadList() {
+		return torrentDownloadList;
+	}
+
+
+	public void setTorrentDownloadList(
+			LinkedHashMap<String, String> torrentDownloadList) {
+		this.torrentDownloadList = torrentDownloadList;
+	}
 }

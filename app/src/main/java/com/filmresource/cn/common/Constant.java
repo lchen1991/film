@@ -1,6 +1,9 @@
 package com.filmresource.cn.common;
 
 
+import android.os.Environment;
+
+import java.io.File;
 
 public class Constant {
 
@@ -20,6 +23,12 @@ public class Constant {
 	public static String accessKeySecret = "SIVkFeOyOFGWZ9syuDCrni4mxWBavb";
 
 	public static String bucket = "bttiantang";
+	public static String bucket_detail = "bttiantang-detail";
 	public static String bucketObj = "homePage";
+
+	public static String bttiantang_downloadurl = "http://www.bttiantang.com/download1.php";
+	public static String storagePath = Environment.getExternalStorageDirectory()+ File.separator+"filmResource";
+
+
 
 }

@@ -18,10 +18,17 @@ import butterknife.Bind;
 /**
  * Created by chenlei on 16/3/1.
  */
-public class FilmAdapter extends AdapterBase<FilmInfo> {
+public class FilmAdapter extends AdapterBase<FilmInfo> implements View.OnClickListener{
 
     public FilmAdapter(Context mContext) {
       this.mContext = mContext;
+    }
+
+    public  onRecyclerViewItemClick onRecyclerViewItemClick;
+
+    public void setOnRecyclerViewItemClick(onRecyclerViewItemClick onRecyclerViewItemClick)
+    {
+        this.onRecyclerViewItemClick = onRecyclerViewItemClick;
     }
 
     @Override
@@ -33,6 +40,10 @@ public class FilmAdapter extends AdapterBase<FilmInfo> {
     public ViewHolderBase onCreateViewHolder(ViewGroup parent, int viewType) {
         View mItemView = LayoutInflater.from(mContext).inflate(R.layout.item_movie,null);
         FilmViewHolder viewHolder = new FilmViewHolder(mItemView);
+        if(onRecyclerViewItemClick!=null)
+        {
+            mItemView.setOnClickListener(this);
+        }
         return viewHolder;
     }
 
@@ -48,6 +59,7 @@ public class FilmAdapter extends AdapterBase<FilmInfo> {
                 filmViewHolder.simpleDraweeView.setImageURI(uri);
             }
             filmViewHolder.textView.setText(filmInfo.getFilmName());
+            filmViewHolder.itemView.setTag(filmInfo);
         }
     }
 
@@ -58,12 +70,26 @@ public class FilmAdapter extends AdapterBase<FilmInfo> {
 
     class FilmViewHolder extends  ViewHolderBase
     {
+        public View itemView;
         @Bind(R.id.my_image_view)
         SimpleDraweeView simpleDraweeView;
         @Bind(R.id.item_movie_title)
         TextView textView;
         public FilmViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(onRecyclerViewItemClick!=null) {
+            onRecyclerViewItemClick.setOnItemClick(v,(FilmInfo)v.getTag());
+        }
+    }
+
+    public interface onRecyclerViewItemClick
+    {
+        void setOnItemClick(View v,FilmInfo filmInfo);
     }
 }

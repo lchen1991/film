@@ -123,7 +123,6 @@ public class OssGetObjectData {
                 }
             });
         }
-
     }
 
     private  void displayTextInputStream(InputStream input) throws IOException {
