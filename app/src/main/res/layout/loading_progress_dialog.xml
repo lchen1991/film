@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/loadprogress_bg"
+    android:paddingLeft="34dp"
+    android:paddingRight="34dp"
+    android:paddingTop="28dp"
+    android:paddingBottom="28dp" >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="38.0dip"
+        android:layout_height="38.0dip"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/icn_loading_indicator"
+        android:indeterminateDuration="2000"
+        android:indeterminateOnly="true"
+        />
+</LinearLayout>

@@ -22,12 +22,14 @@ import com.filmresource.cn.net.manager.LoadControler;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.manager.RequestManager.RequestListener;
 import com.filmresource.cn.utils.LogUtil;
+import com.filmresource.cn.widget.CustomDialog;
 import com.google.gson.Gson;
 
 public class NetBaseActivity extends BaseActivity implements RequestListener,OssResultListenerX{
 
 	public HashMap<Integer, LoadControler> requests = null;
 	private Map<Integer,OSSAsyncTask> mOssAsynTaskMap = null;
+	private CustomDialog loadProgressDialog;
 	private  GetObjectRequest get;
 	protected Gson gson = new Gson();
 
@@ -78,7 +80,7 @@ public class NetBaseActivity extends BaseActivity implements RequestListener,Oss
 	@Override
 	public final void onError(String errorMsg, String url, int actionId) {
 		moveRequest(actionId);
-		LogUtil.e(TAG, "move request:"+actionId);
+		LogUtil.e(TAG, "move request:" + actionId);
 		onNetResponseError(errorMsg, url, actionId);
 	}
 
@@ -93,7 +95,7 @@ public class NetBaseActivity extends BaseActivity implements RequestListener,Oss
 	public final synchronized void addGetNetRequest(String url,HashMap<String,String> params,
 			RequestListener requestListener, Class<?> respClass,
 			boolean shouldCache,int actionId) {
-		LogUtil.e(TAG, "add addGetNetRequest:"+actionId);
+		LogUtil.e(TAG, "add addGetNetRequest:" + actionId);
 		if (requests != null) {
 				requests.put(actionId,
 						RequestManager.getInstance().get(getUrl(url, params), requestListener,
@@ -148,22 +150,34 @@ public class NetBaseActivity extends BaseActivity implements RequestListener,Oss
 		return url;
 	}
 
-	public void asyncGetObject(int actionId,String mBucket,String mObject) {
-		if(get == null)
+	public void asyncGetObject(int actionId,String mBucket,String mObject,boolean showProgress) {
+
+		if(showProgress)
 		{
-			get = new GetObjectRequest(mBucket, mObject);
+			showLoadProgressDialog();
 		}
-		if(BaseApplication.oss == null)
+		try
 		{
-			return;
-		}
-		OSSAsyncTask ossAsyncTask = mOssAsynTaskMap.get(actionId);
-		if(ossAsyncTask!=null)
+			if(get == null)
+			{
+				get = new GetObjectRequest(mBucket, mObject);
+			}
+			if(BaseApplication.oss == null)
+			{
+				return;
+			}
+			OSSAsyncTask ossAsyncTask = mOssAsynTaskMap.get(actionId);
+			if(ossAsyncTask!=null)
+			{
+				ossAsyncTask.cancel();
+			}
+			ossAsyncTask = BaseApplication.oss.asyncGetObject(get, new OssLoadControler(actionId, this));
+			mOssAsynTaskMap.put(actionId,ossAsyncTask);
+		}catch (Exception e)
 		{
-			ossAsyncTask.cancel();
+			dismissLoadProgressDialog();
 		}
-		ossAsyncTask = BaseApplication.oss.asyncGetObject(get, new OssLoadControler(actionId, this));
-		mOssAsynTaskMap.put(actionId,ossAsyncTask);
+
 	}
 
 	@Override
@@ -181,6 +195,30 @@ public class NetBaseActivity extends BaseActivity implements RequestListener,Oss
 		if(mOssAsynTaskMap.containsKey(actionId))
 		{
 			mOssAsynTaskMap.remove(actionId);
+			if(mOssAsynTaskMap.size()==0)
+			{
+				dismissLoadProgressDialog();
+			}
+		}
+	}
+
+	public void showLoadProgressDialog()
+	{
+		if(loadProgressDialog == null)
+		{
+			loadProgressDialog = CustomDialog.createLoadProgressDialog(this);
+		}
+		if(!this.isFinishing()&&!loadProgressDialog.isShowing())
+		{
+			loadProgressDialog.show();
+		}
+	}
+
+	public void dismissLoadProgressDialog()
+	{
+		if(!this.isFinishing()&&loadProgressDialog!=null&&loadProgressDialog.isShowing())
+		{
+			loadProgressDialog.dismiss();
 		}
 	}
 }

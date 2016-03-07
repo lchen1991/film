@@ -66,12 +66,6 @@ public  class FilmListFragment extends LazyFragment {
 
     @Override
     protected void onLazyLoad() {
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
         Bundle bundle = getArguments();
         if(bundle!=null)
         {
@@ -126,9 +120,15 @@ public  class FilmListFragment extends LazyFragment {
                     }
                 }
             });
-            ossGetObjectData.asyncGetObjectSample();
         }
 
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                ossGetObjectData.asyncGetObjectSample();
+            }
+        });
     }
 
     @Override

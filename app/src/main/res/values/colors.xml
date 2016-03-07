@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#33444b</color>
+    <color name="colorPrimaryDark">#2d3c42</color>
+    <color name="colorAccent">#33444b</color>
 
     <color name="holo_blue_bright">#ff00ddff</color>
     <color name="holo_green_light">#ff99cc00</color>
@@ -11,4 +11,7 @@
 
     <color name="touch_transparent">#44000000</color>
     <color name="touch_highlight">#00000000</color>
+
+    <color name="view_press">#8a8a8a8a</color>
+    <color name="view_normal">#00000000</color>
 </resources>

@@ -20,6 +20,7 @@ import com.filmresource.cn.R;
 import com.filmresource.cn.bean.BaseUI;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
+import com.filmresource.cn.widget.CustomDialog;
 
 import butterknife.ButterKnife;
 
@@ -28,7 +29,8 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 	public static final String TAG = BaseActivity.class.getSimpleName();
 	private BaseApplication mApplication;
 	private View emptyView;
-	
+
+
 	@SuppressLint("UseSparseArrays") @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

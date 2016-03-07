@@ -40,6 +40,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.activity.BaseActivity;
+import com.filmresource.cn.activity.NetBaseActivity;
 import com.filmresource.cn.adapter.FilmAdapter;
 import com.filmresource.cn.adapter.FragmentTabAdapter;
 import com.filmresource.cn.bean.BtHomePageInfo;
@@ -63,7 +64,7 @@ import butterknife.OnClick;
 import static com.filmresource.cn.bean.BtHomePageInfo.BTHOMEPAGE_FILMINFOLIST;
 
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends NetBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OssResultListener {
 
     @Bind(R.id.tabs)
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity
         Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -118,6 +120,7 @@ public class MainActivity extends BaseActivity
 
           OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
           getObjectSamples.asyncGetObjectSample();
+            showLoadProgressDialog();
     }
 
     @Override
@@ -201,6 +204,7 @@ public class MainActivity extends BaseActivity
                         movieClassifies,fragments);
                 viewPager.setAdapter(fragmentTabAdapter);
                 tabLayout.setupWithViewPager(viewPager);
+                dismissLoadProgressDialog();
             }
         });
     }
