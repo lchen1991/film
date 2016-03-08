@@ -28,9 +28,14 @@ import butterknife.Bind;
 public class WebViewBaseActivity extends BaseActivity {
 
 	@Bind(R.id.webview)
-	WebView mWebView;
+	protected WebView mWebView;
+	protected String url;
 
-	private String url;
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		setWebSetting();
+	}
 
 	// 在WebView加载页面之前，可以选同步Cookie，然后再加载网页
 	private void setWebCookies() {
@@ -103,40 +108,39 @@ public class WebViewBaseActivity extends BaseActivity {
 	protected void onPause() {
 		super.onPause();
 		LogUtil.e("WebViewBaseActivity", "onPause");
-		mWebView.pauseTimers();
-		if (isFinishing()) {
-			mWebView.loadUrl("about:blank");
-			setContentView(new FrameLayout(this));
-		}
-		doMethod("onPause");
+//		mWebView.pauseTimers();
+//		if (isFinishing()) {
+//			mWebView.loadUrl("about:blank");
+//			setContentView(new FrameLayout(this));
+//		}
+//		doMethod("onPause");
 	}
 
 	protected void onResume() {
 		super.onResume();
-		mWebView.resumeTimers();
-		doMethod("onResume");
+//		mWebView.resumeTimers();
+//		doMethod("onResume");
 	}
 
-	private void doMethod(String method) {
-		if (mWebView != null) {
-			try {
-				WebView.class.getMethod(method).invoke(mWebView, new Class[0]);
-			} catch (NoSuchMethodException localNoSuchMethodException) {
-				Log.i("No such method: " + method,
-						localNoSuchMethodException.toString());
-			} catch (IllegalAccessException localIllegalAccessException) {
-				Log.i("Illegal Access: " + method,
-						localIllegalAccessException.toString());
-			} catch (InvocationTargetException localInvocationTargetException) {
-				Log.i("Invocation Target Exception: " + method,
-						localInvocationTargetException.toString());
-			}
-		}
-	}
+//	private void doMethod(String method) {
+//		if (mWebView != null) {
+//			try {
+//				WebView.class.getMethod(method).invoke(mWebView, new Class[0]);
+//			} catch (NoSuchMethodException localNoSuchMethodException) {
+//				Log.i("No such method: " + method,
+//						localNoSuchMethodException.toString());
+//			} catch (IllegalAccessException localIllegalAccessException) {
+//				Log.i("Illegal Access: " + method,
+//						localIllegalAccessException.toString());
+//			} catch (InvocationTargetException localInvocationTargetException) {
+//				Log.i("Invocation Target Exception: " + method,
+//						localInvocationTargetException.toString());
+//			}
+//		}
+//	}
 
 	class CustomWebClient extends WebViewClient
 	{
-
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			LogUtil.w("WebViewBaseActivity", "onPageStarted-->" + url);

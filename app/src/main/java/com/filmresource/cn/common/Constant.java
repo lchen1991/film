@@ -28,6 +28,7 @@ public class Constant {
 
 	public static String bttiantang_downloadurl = "http://www.bttiantang.com/download1.php";
 	public static String storagePath = Environment.getExternalStorageDirectory()+ File.separator+"filmResource";
+	public static String baiduurl = "https://m.baidu.com/s?word=";
 
 
 

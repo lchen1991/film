@@ -23,15 +23,15 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.filmresource.cn.ScrollingActivity"
-
             android:theme="@style/AppTheme.NoActionBar"
-
-            ></activity>
+            />
+        <activity android:name="com.filmresource.cn.ui.FilmActivity.SnifferActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

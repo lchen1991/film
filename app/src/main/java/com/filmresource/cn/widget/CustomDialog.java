@@ -5,8 +5,10 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.filmresource.cn.R;
+import com.filmresource.cn.utils.StringUtils;
 
 public class CustomDialog extends Dialog {
 	private Context context = null;
@@ -38,4 +40,21 @@ public class CustomDialog extends Dialog {
 		return customDialog;
 	}
 
+	public void setMessage(String message)
+	{
+		if(customDialog!=null)
+		{
+			TextView tvMessage = (TextView)customDialog.findViewById(R.id.hint);
+			if(tvMessage!=null&&!StringUtils.isEmpty(message))
+			{
+				tvMessage.setVisibility(View.VISIBLE);
+				tvMessage.setText(message);
+			}
+			else
+			{
+				tvMessage.setVisibility(View.GONE);
+			}
+		}
+
+	}
 }

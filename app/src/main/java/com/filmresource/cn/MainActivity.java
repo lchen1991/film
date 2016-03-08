@@ -99,7 +99,6 @@ public class MainActivity extends NetBaseActivity
 //
 //            }
 //        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -173,7 +172,6 @@ public class MainActivity extends NetBaseActivity
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
@@ -215,8 +213,7 @@ public class MainActivity extends NetBaseActivity
         if (clientExcepion != null) {
             // 本地异常如网络异常等
             clientExcepion.printStackTrace();
-            Snackbar.make(viewPager, "网络连接失败!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(viewPager, "网络连接失败!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         }
         if (serviceException != null) {

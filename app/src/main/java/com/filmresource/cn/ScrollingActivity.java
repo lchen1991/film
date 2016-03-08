@@ -1,6 +1,7 @@
 package com.filmresource.cn;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,7 @@ import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.htmlparser.bttiantang.HtmlParseFromBttt;
+import com.filmresource.cn.ui.FilmActivity.SnifferActivity;
 import com.filmresource.cn.utils.DensityUtils;
 import com.filmresource.cn.utils.FileUtils;
 import com.filmresource.cn.utils.LogUtil;
@@ -115,7 +117,9 @@ public class ScrollingActivity extends NetBaseActivity  {
                 }
                 break;
             case R.id.sniffer_go:
-                ToastUtil.showLong(this,"嗅探...");
+                Intent intent = new Intent(this, SnifferActivity.class);
+                intent.putExtra("filmInfo", filmInfo);
+                startActivity(intent);
                 break;
         }
     }
