@@ -1,67 +1,60 @@
 package com.filmresource.cn;
 
-import android.animation.ObjectAnimator;
-import android.os.Build;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.transition.Explode;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.widget.GridView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
-import com.alibaba.sdk.android.oss.OSS;
-import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
-import com.alibaba.sdk.android.oss.common.OSSLog;
-import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
-import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.activity.NetBaseActivity;
-import com.filmresource.cn.adapter.FilmAdapter;
 import com.filmresource.cn.adapter.FragmentTabAdapter;
 import com.filmresource.cn.bean.BtHomePageInfo;
-import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.bean.MovieClassify;
+import com.filmresource.cn.bean.Trailer;
+import com.filmresource.cn.bean.TrailerList;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
+import com.filmresource.cn.net.manager.RequestManager;
+import com.filmresource.cn.net.parser.ResponseDataToJSON;
 import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
+import com.filmresource.cn.utils.DensityUtils;
 import com.filmresource.cn.utils.LogUtil;
-import com.filmresource.cn.utils.ToastUtil;
-import com.filmresource.cn.widget.ShimmerFrameLayout;
+import com.filmresource.cn.widget.dmsview.LoopGalleryAdapter;
+import com.filmresource.cn.widget.dmsview.NavigationGallery;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-
-import static com.filmresource.cn.bean.BtHomePageInfo.BTHOMEPAGE_FILMINFOLIST;
 
 
 public class MainActivity extends NetBaseActivity
@@ -71,7 +64,14 @@ public class MainActivity extends NetBaseActivity
     TabLayout tabLayout;
     @Bind(R.id.filmPage_main)
     ViewPager viewPager;
+    private Context mContext;
 
+    // 广告位
+    @Bind(R.id.product_list_layout)
+     LinearLayout dmsLayout;
+    @Bind(R.id.product_ttd_vp)
+     NavigationGallery dmsVp;
+    private ActiveAdapter activeAdapter;
 
     @OnClick(R.id.fab)
     public void onClick(View view) {
@@ -86,6 +86,7 @@ public class MainActivity extends NetBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -116,10 +117,22 @@ public class MainActivity extends NetBaseActivity
 //            }
 //        });
 
+        dmsVp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dmsVp.requestFocus();
+                return false;
+            }
+        });
+        int dmsHeight = ((Constant.screenH - DensityUtils.dp2px(this, 17)) * 2 / 6);
+        dmsVp.getLayoutParams().height = dmsHeight;
 
           OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
           getObjectSamples.asyncGetObjectSample();
             showLoadProgressDialog();
+
+        RequestManager.getInstance().setParser(new ResponseDataToJSON());
+        addGetNetRequest("http://api.m.mtime.cn/PageSubArea/TrailerList.api",null,this, TrailerList.class,false,R.id.request_top_trailer);
     }
 
     @Override
@@ -199,7 +212,7 @@ public class MainActivity extends NetBaseActivity
                     LogUtil.e("info", movieClassify.getClassify());
                 }
                 FragmentTabAdapter fragmentTabAdapter = new FragmentTabAdapter(getSupportFragmentManager(),
-                        movieClassifies,fragments);
+                        movieClassifies, fragments);
                 viewPager.setAdapter(fragmentTabAdapter);
                 tabLayout.setupWithViewPager(viewPager);
                 dismissLoadProgressDialog();
@@ -227,4 +240,131 @@ public class MainActivity extends NetBaseActivity
         }
     }
 
+    /** 广告位 */
+    private void setActiveViewContext(List<Trailer> contents) {
+        if (contents != null && contents.size() > 0) {
+            activeAdapter = new ActiveAdapter(dmsVp, contents);
+            dmsVp.setAdapter(activeAdapter);
+            dmsVp.setHoldTime(5000);
+            dmsVp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Trailer info = (Trailer) parent.getAdapter().getItem(position);
+//                    Intent intent = new Intent(FoundActivity.this.getActivity(),FmPlayListAndDetial.class);
+//                    intent.putExtra("contentId", info.getId());
+//                    intent.putExtra("isvip",false);
+//                    startActivity(intent);intent
+                }
+
+            });
+            activeAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    /**
+     * 轮播图适配器
+     *
+     * @author ql
+     *
+     */
+    private class ActiveAdapter extends LoopGalleryAdapter {
+        private String IMG_TAG = "img";
+        private int realSize;
+        private List<Trailer> contents = new ArrayList<Trailer>();
+        private NavigationGallery navigationGallery;
+
+        public ActiveAdapter(NavigationGallery navigationGallery,
+                             List<Trailer> activeList) {
+            super(navigationGallery);
+            realSize = activeList.size();
+            this.navigationGallery = navigationGallery;
+            this.contents.addAll(activeList);
+        }
+
+        public int getRealCount() {
+            return realSize;
+        }
+
+        @Override
+        public Trailer getItem(int position) {
+            position = getRealPosition(position);
+            return contents.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = new SimpleDraweeView(mContext);
+                ((SimpleDraweeView) convertView).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Gallery.LayoutParams param = new Gallery.LayoutParams(Gallery.LayoutParams.MATCH_PARENT,Gallery.LayoutParams.MATCH_PARENT);
+                convertView.setLayoutParams(param);
+                holder.imageView = (SimpleDraweeView) convertView;
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            position = this.getRealPosition(position);
+            final Trailer info = contents.get(position);
+            holder.imageView.setImageURI(Uri.parse(info.getCoverImg()));
+            // 预加载后一张和最后一张
+            int nextPosition = nextPosition(position);
+            String nextUrl = contents.get(nextPosition).getCoverImg();
+
+            if (nextUrl != null && !nextUrl.isEmpty()) {
+                SimpleDraweeView image = (SimpleDraweeView) navigationGallery.findViewWithTag(nextUrl);
+                if (image != null) {
+                    image.setImageURI(Uri.parse(nextUrl));
+                }
+            }
+            int lastPosition = lastPosition(position);
+            String topUrl = contents.get(lastPosition).getCoverImg();
+            if (topUrl != null && !topUrl.isEmpty()) {
+                SimpleDraweeView image = (SimpleDraweeView) navigationGallery.findViewWithTag(lastPosition);
+                if (image != null) {
+                    System.out.println(topUrl);
+                    image.setImageURI(Uri.parse(topUrl));
+                }
+            }
+            return convertView;
+        }
+
+        class ViewHolder {
+            SimpleDraweeView imageView;
+        }
+    }
+
+    @Override
+    public void onNetResponseSuccess(Object response, Map<String, String> headers, String url, int actionId) {
+        switch (actionId)
+        {
+            case R.id.request_top_trailer:
+                TrailerList trailerList = (TrailerList)response;
+                List<Trailer> trailers = trailerList.getTrailers();
+                List<Trailer> ts = new ArrayList<Trailer>();
+                Collections.shuffle(trailers);
+                int size = 4 ;
+                for (int i = 0;i < size && i < trailers.size();i++)
+                {
+                    ts.add(trailers.get(i));
+                }
+                setActiveViewContext(ts);
+            break;
+
+        }
+        super.onNetResponseSuccess(response, headers, url, actionId);
+    }
+
+    @Override
+    public void onNetResponseError(String errorMsg, String url, int actionId) {
+        super.onNetResponseError(errorMsg, url, actionId);
+    }
 }

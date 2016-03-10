@@ -20,6 +20,7 @@ import com.filmresource.cn.R;
 import com.filmresource.cn.bean.BaseUI;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
+import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.widget.CustomDialog;
 
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 	public static final String TAG = BaseActivity.class.getSimpleName();
 	private BaseApplication mApplication;
 	private View emptyView;
-
+	private CustomDialog loadProgressDialog;
 
 	@SuppressLint("UseSparseArrays") @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,33 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 	
 	@Override
 	public void onUICallback(int type, Object object) {
+	}
+
+	public void showLoadProgressDialog()
+	{
+		showLoadProgressDialog(null);
+	}
+
+	public void showLoadProgressDialog(String message)
+	{
+		if(loadProgressDialog == null)
+		{
+			loadProgressDialog = CustomDialog.createLoadProgressDialog(this);
+		}
+
+		loadProgressDialog.setMessage(message);
+		if(!this.isFinishing()&&!loadProgressDialog.isShowing())
+		{
+			loadProgressDialog.show();
+		}
+	}
+
+	public void dismissLoadProgressDialog()
+	{
+		if(!this.isFinishing()&&loadProgressDialog!=null&&loadProgressDialog.isShowing())
+		{
+			loadProgressDialog.dismiss();
+		}
 	}
 
 }

@@ -1,7 +1,11 @@
 package com.filmresource.cn.htmlparser.bttiantang;
 
+import android.content.Context;
+import android.os.Looper;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +28,8 @@ import org.jsoup.select.Elements;
 import com.filmresource.cn.bean.BtHomePageInfo;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.bean.MovieClassify;
+import com.filmresource.cn.utils.FileUtils;
+import com.filmresource.cn.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -276,9 +282,9 @@ public class HtmlParseFromBttt {
 	 * @param id
 	 * @param uhash
 	 */
-	public void downloadtTorrent(String url,String id,String uhash,String filepath)
+	public File downloadtTorrent(Context context,String url,String id,String uhash,String filepath)
 	{
-		//action=download&id=27477&uhash=4934020f2d77e465d9c266ad&imageField.x=10&imageField.y=10
+		File downfile = null;
 		try {
 			URL httpUrl = new URL(url) ;
 			HttpURLConnection connection = (HttpURLConnection) httpUrl.openConnection();
@@ -290,7 +296,7 @@ public class HtmlParseFromBttt {
 			connection.connect();
 
 			OutputStream outputStream = connection.getOutputStream();
-			outputStream.write(("action=download&id="+id+"&uhash="+uhash+"&imageField.x=68&imageField.y=28").getBytes());
+			outputStream.write(("action=download&id=" + id + "&uhash=" + uhash + "&imageField.x=68&imageField.y=28").getBytes());
 			
 			if(connection.getResponseCode() == 200)
 			{
@@ -306,25 +312,42 @@ public class HtmlParseFromBttt {
 					fileName = string.substring(nameStart+s.length(), end+e.length());
 					fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");
 				}
-				BufferedInputStream inputStreamReader = new BufferedInputStream(connection.getInputStream());
-				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filepath+fileName));
-				byte[] data = new byte[1024];
-				int len = -1;
-				while ((len = inputStreamReader.read(data))!=-1) {
-					bufferedOutputStream.write(data, 0, len);
-					bufferedOutputStream.flush();
+				String path  = filepath + fileName;
+				downfile = new File(path);
+				if(FileUtils.isFileExist(path))
+				{
+					//Looper.prepare();
+					//ToastUtil.showLong(context, "文件已存在！");
 				}
-				inputStreamReader.close();
-				bufferedOutputStream.close();
+				else
+				{
+					BufferedInputStream inputStreamReader = new BufferedInputStream(connection.getInputStream());
+					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(downfile));
+					byte[] data = new byte[1024];
+					int len = -1;
+					while ((len = inputStreamReader.read(data))!=-1) {
+						bufferedOutputStream.write(data, 0, len);
+						bufferedOutputStream.flush();
+					}
+					inputStreamReader.close();
+					bufferedOutputStream.close();
+				}
 			}
 			else
 			{
-				System.out.println("下载失败！");
+				Looper.prepare();
+				ToastUtil.showLong(context, "下载失败！");
+				Looper.loop();
 			}
-			
 			outputStream.close();
+			return  downfile;
 		} catch (Exception e) {
-			System.out.println("下载失败！"+e.getMessage());
+			Looper.prepare();
+			ToastUtil.showLong(context, "下载失败！");
+			Looper.loop();
+			return  null;
+		}finally {
+
 		}
 		
 	}

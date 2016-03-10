@@ -1,12 +1,6 @@
 package com.filmresource.cn.activity;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.alibaba.sdk.android.oss.ClientException;
@@ -22,14 +16,16 @@ import com.filmresource.cn.net.manager.LoadControler;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.manager.RequestManager.RequestListener;
 import com.filmresource.cn.utils.LogUtil;
-import com.filmresource.cn.widget.CustomDialog;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class NetBaseActivity extends BaseActivity implements RequestListener,OssResultListenerX{
 
 	public HashMap<Integer, LoadControler> requests = null;
 	private Map<Integer,OSSAsyncTask> mOssAsynTaskMap = null;
-	private CustomDialog loadProgressDialog;
 	private  GetObjectRequest get;
 	protected Gson gson = new Gson();
 
@@ -202,23 +198,5 @@ public class NetBaseActivity extends BaseActivity implements RequestListener,Oss
 		}
 	}
 
-	public void showLoadProgressDialog()
-	{
-		if(loadProgressDialog == null)
-		{
-			loadProgressDialog = CustomDialog.createLoadProgressDialog(this);
-		}
-		if(!this.isFinishing()&&!loadProgressDialog.isShowing())
-		{
-			loadProgressDialog.show();
-		}
-	}
 
-	public void dismissLoadProgressDialog()
-	{
-		if(!this.isFinishing()&&loadProgressDialog!=null&&loadProgressDialog.isShowing())
-		{
-			loadProgressDialog.dismiss();
-		}
-	}
 }

@@ -3,5 +3,7 @@
 
     <item name="request_bttiantang_detail" type="id"/>
 
+    <item name="request_top_trailer" type="id"/>
+
 
 </resources>

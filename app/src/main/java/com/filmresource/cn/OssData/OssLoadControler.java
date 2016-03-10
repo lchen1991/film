@@ -5,21 +5,14 @@ import android.util.Log;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
-import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 import com.alibaba.sdk.android.oss.model.GetObjectResult;
-import com.alibaba.sdk.android.oss.model.OSSRequest;
-import com.alibaba.sdk.android.oss.model.OSSResult;
-import com.filmresource.cn.net.manager.AbsLoadControler;
-import com.filmresource.cn.net.manager.LoadControler;
-import com.filmresource.cn.net.manager.LoadListener;
 import com.filmresource.cn.net.manager.RequestManager.RequestListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 /**
  * Created by chenlei on 16/3/5.

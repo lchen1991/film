@@ -9,4 +9,10 @@
 
     <dimen name="height_top_bar">46dp</dimen>
     <dimen name="empty_view_margin_top">125.5dip</dimen>
+
+    <dimen name="dms_icon">8dp</dimen>
+    <dimen name="play_head">20dp</dimen>
+    <dimen name="cpb_stroke_width">4dp</dimen>
+    <dimen name="navigation_selected_m_left">10dp</dimen>
+
 </resources>

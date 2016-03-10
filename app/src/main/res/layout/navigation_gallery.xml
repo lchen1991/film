@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.filmresource.cn.widget.dmsview.DisableFlingGallery
+        android:id="@+id/glFeaturedDes"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:soundEffectsEnabled="false"
+        android:spacing="0dp"
+        android:unselectedAlpha="100" />
+
+    <ImageView
+        android:id="@+id/ivShade"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/shaw_bg" />
+
+    <LinearLayout
+        android:id="@+id/llSelectedIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingRight="4dp"
+        android:gravity="right"
+        android:orientation="horizontal" />
+
+</RelativeLayout>

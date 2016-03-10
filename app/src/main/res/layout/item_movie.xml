@@ -35,7 +35,6 @@
         android:gravity="bottom"
         tools:text="Avengers"
         android:textSize="14sp"
-        android:singleLine="true"
-        />
+        android:singleLine="true" />
 
 </FrameLayout>

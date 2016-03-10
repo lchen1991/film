@@ -166,4 +166,8 @@
     <declare-styleable name="touch_highlight">
         <attr name="touchbg" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="GallerySwitch">
+        <attr name="viewtype" format="integer" />
+    </declare-styleable>
 </resources>

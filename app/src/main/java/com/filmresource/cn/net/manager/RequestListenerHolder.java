@@ -1,12 +1,10 @@
 package com.filmresource.cn.net.manager;
 
+import android.app.Activity;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.Map;
-
-import android.app.Activity;
-
-import com.filmresource.cn.net.manager.RequestManager.RequestListener;
 
 /**
  * RequestListener Holder to avoid memory leak!
@@ -16,15 +14,15 @@ public class RequestListenerHolder implements LoadListener {
 
 	protected static final String CHARSET_UTF_8 = "UTF-8";
 
-	protected WeakReference<RequestListener> mRequestListenerRef;
+	protected WeakReference<RequestManager.RequestListener> mRequestListenerRef;
 
-	protected RequestListener mRequestListener;
+	protected RequestManager.RequestListener mRequestListener;
 
 	public RequestListenerHolder(){}
 	
-	public RequestListenerHolder(RequestListener requestListener) {
+	public RequestListenerHolder(RequestManager.RequestListener requestListener) {
 		if (requestListener instanceof Activity) {
-			this.mRequestListenerRef = new WeakReference<RequestListener>(
+			this.mRequestListenerRef = new WeakReference<RequestManager.RequestListener>(
 					requestListener);
 		} else {
 			this.mRequestListener = requestListener;
@@ -34,7 +32,7 @@ public class RequestListenerHolder implements LoadListener {
 	@Override
 	public void onStart() {
 		if (mRequestListenerRef != null) {
-			RequestListener requestListener = mRequestListenerRef.get();
+			RequestManager.RequestListener requestListener = mRequestListenerRef.get();
 			if (requestListener != null) {
 				requestListener.onRequest();
 				return;
@@ -57,7 +55,7 @@ public class RequestListenerHolder implements LoadListener {
 		}
 
 		if (mRequestListenerRef != null) {
-			RequestListener requestListener = mRequestListenerRef.get();
+			RequestManager.RequestListener requestListener = mRequestListenerRef.get();
 			if (requestListener != null) {
 				onSuccessToParser(requestListener,parsed,respClass, headers, url, actionId);
 				return;
@@ -72,7 +70,7 @@ public class RequestListenerHolder implements LoadListener {
 	@Override
 	public void onError(String errorMsg, String url, int actionId) {
 		if (mRequestListenerRef != null) {
-			RequestListener requestListener = mRequestListenerRef.get();
+			RequestManager.RequestListener requestListener = mRequestListenerRef.get();
 			if (requestListener != null) {
 				requestListener.onError(errorMsg, url, actionId);
 				return;
@@ -84,7 +82,7 @@ public class RequestListenerHolder implements LoadListener {
 		}
 	}
 	
-	public void  onSuccessToParser(RequestListener requestListener,String parsed,Class<?> respClass,Map<String, String> headers, String url,
+	public void  onSuccessToParser(RequestManager.RequestListener requestListener,String parsed,Class<?> respClass,Map<String, String> headers, String url,
 			int actionId)
 	{
 		requestListener.onSuccess(parsed, headers, url, actionId);

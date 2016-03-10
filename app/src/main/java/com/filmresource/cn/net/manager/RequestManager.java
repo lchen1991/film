@@ -1,9 +1,17 @@
 package com.filmresource.cn.net.manager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.Volley;
+import com.filmresource.cn.net.parser.ResponseDataToJSON;
+
+import java.util.Map;
 
 /**
  * RequestManager
@@ -11,25 +19,13 @@ import android.content.Context;
  */
 public class RequestManager {
 
-	public interface Method {
-		int DEPRECATED_GET_OR_POST = -1;
-		int GET = 0;
-		int POST = 1;
-		int PUT = 2;
-		int DELETE = 3;
-		int HEAD = 4;
-		int OPTIONS = 5;
-		int TRACE = 6;
-		int PATCH = 7;
-	}
-
 	private static final int TIMEOUT_COUNT = 10 * 1000;
 
 	private static final int RETRY_TIMES = 1;
 
 	private volatile static RequestManager INSTANCE = null;
 
-	//private RequestQueue mRequestQueue = null;
+	private RequestQueue mRequestQueue = null;
 	
 	private RequestListenerHolder requestListenerHolder = null;
 
@@ -51,7 +47,7 @@ public class RequestManager {
 	}
 
 	public void init(Context context) {
-//		this.mRequestQueue = Volley.newRequestQueue(context);
+		this.mRequestQueue = Volley.newRequestQueue(context);
 	}
 
 	/**
@@ -70,9 +66,9 @@ public class RequestManager {
 		return INSTANCE;
 	}
 
-//	public RequestQueue getRequestQueue() {
-//		return this.mRequestQueue;
-//	}
+	public RequestQueue getRequestQueue() {
+		return this.mRequestQueue;
+	}
 
 	/**
 	 * default get method
@@ -180,40 +176,40 @@ public class RequestManager {
 		if (requestListener == null)
 			throw new NullPointerException();
 
-//		final ByteArrayLoadControler loadControler = new ByteArrayLoadControler(
-//				requestListener,respClass, actionId);
-//
-//		Request<?> request = null;
-//		if (data != null && data instanceof RequestMap) {// force POST and No
-//															// Cache
-//			request = new ByteArrayRequest(Method.POST, url, data,
-//					loadControler, loadControler);
-//			request.setShouldCache(false);
-//		} else {
-//			request = new ByteArrayRequest(method, url, data, loadControler,
-//					loadControler);
-//			request.setShouldCache(shouldCache);
-//		}
-//
-//		if (headers != null && !headers.isEmpty()) {// add headers if not empty
-//			try {
-//				request.getHeaders().putAll(headers);
-//			} catch (AuthFailureError e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		RetryPolicy retryPolicy = new DefaultRetryPolicy(timeoutCount,
-//				retryTimes, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-//		request.setRetryPolicy(retryPolicy);
-//		loadControler.bindRequest(request);
-//
-//		if (this.mRequestQueue == null)
-//			throw new NullPointerException();
-//		requestListener.onStart();
-//		this.mRequestQueue.add(request);
+		final ByteArrayLoadControler loadControler = new ByteArrayLoadControler(
+				requestListener,respClass, actionId);
 		
-		return null;
+		Request<?> request = null;
+		if (data != null && data instanceof RequestMap) {// force POST and No
+															// Cache
+			request = new ByteArrayRequest(Method.POST, url, data,
+					loadControler, loadControler);
+			request.setShouldCache(false);
+		} else {
+			request = new ByteArrayRequest(method, url, data, loadControler,
+					loadControler);
+			request.setShouldCache(shouldCache);
+		}
+
+		if (headers != null && !headers.isEmpty()) {// add headers if not empty
+			try {
+				request.getHeaders().putAll(headers);
+			} catch (AuthFailureError e) {
+				e.printStackTrace();
+			}
+		}
+
+		RetryPolicy retryPolicy = new DefaultRetryPolicy(timeoutCount,
+				retryTimes, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+		request.setRetryPolicy(retryPolicy);
+		loadControler.bindRequest(request);
+
+		if (this.mRequestQueue == null)
+			throw new NullPointerException();
+		requestListener.onStart();
+		this.mRequestQueue.add(request);
+		
+		return loadControler;
 	}
 
 	private RequestListenerHolder getParser(RequestListener requestListener)
@@ -226,7 +222,7 @@ public class RequestManager {
 		return requestListenerHolder;
 	}
 	
-	public void setParser(RequestListenerHolder requestListenerHolder)
+	public void setParser(ResponseDataToJSON requestListenerHolder)
 	{
 		this.requestListenerHolder = requestListenerHolder;
 	}

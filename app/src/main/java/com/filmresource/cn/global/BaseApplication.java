@@ -1,11 +1,6 @@
 package com.filmresource.cn.global;
 
-import java.util.ArrayList;
-import java.util.List;
-import android.app.Activity;
 import android.app.Application;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.OSS;
@@ -18,7 +13,9 @@ import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.fragment.BaseFragment;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.utils.LogUtil;
-import com.filmresource.cn.utils.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseApplication extends Application{
 
