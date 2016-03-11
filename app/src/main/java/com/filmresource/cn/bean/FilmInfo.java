@@ -1,6 +1,6 @@
 package com.filmresource.cn.bean;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class FilmInfo extends  BaseEntity{
 	private LinkedHashMap<String,String> torrentDownloadList;
 
 	public String getFilmName() {
+		if(filmName == null) filmName ="";
 		return filmName;
 	}
 
@@ -36,54 +37,67 @@ public class FilmInfo extends  BaseEntity{
 	}
 
 	public String getFimHref() {
+		if(fimHref == null) fimHref ="";
 		return fimHref;
 	}
 
 	public void setFimHref(String fimHref) {
+
 		this.fimHref = fimHref;
 	}
 
 	public String getFilmTitle() {
+		if(filmTitle == null) filmTitle ="";
 		return filmTitle;
 	}
 
 	public void setFilmTitle(String filmTitle) {
+
 		this.filmTitle = filmTitle;
 	}
 
 	public List<String> getFilmClassify() {
+		if(filmClassify == null) filmClassify = new ArrayList<String>();
 		return filmClassify;
 	}
 
 	public void setFilmClassify(List<String> filmClassify) {
+
 		this.filmClassify = filmClassify;
 	}
 
 	public String getFilmZone() {
+		if(filmZone == null) filmZone ="";
 		return filmZone;
 	}
 
 	public void setFilmZone(String filmZone) {
+
 		this.filmZone = filmZone;
 	}
 
 	public String getFilmScreensTime() {
+		if(filmScreensTime == null) filmScreensTime ="";
 		return filmScreensTime;
 	}
 
 	public void setFilmScreensTime(String filmScreensTime) {
+
 		this.filmScreensTime = filmScreensTime;
 	}
 
 	public String getFilmPublishTime() {
+		if(filmPublishTime == null) filmPublishTime ="";
 		return filmPublishTime;
 	}
 
 	public void setFilmPublishTime(String filmPublishTime) {
+
 		this.filmPublishTime = filmPublishTime;
 	}
 
 	public List<String> getFilmStarred() {
+
 		return filmStarred;
 	}
 
@@ -92,10 +106,12 @@ public class FilmInfo extends  BaseEntity{
 	}
 
 	public String getFilmState() {
+		if(filmState == null) filmState ="";
 		return filmState;
 	}
 
 	public void setFilmState(String filmState) {
+
 		this.filmState = filmState;
 	}
 
@@ -108,14 +124,17 @@ public class FilmInfo extends  BaseEntity{
 	}
 
 	public String getFilmPoster() {
+		if(filmPoster == null) filmPoster ="";
 		return filmPoster;
 	}
 
 	public void setFilmPoster(String filmPoster) {
+
 		this.filmPoster = filmPoster;
 	}
 
 	public String getFilmSynopsis() {
+		if(filmSynopsis == null) filmSynopsis ="";
 		return filmSynopsis;
 	}
 
@@ -124,31 +143,38 @@ public class FilmInfo extends  BaseEntity{
 	}
 
 	public String getFilmScore() {
+		if(filmScore == null) filmScore ="";
 		return filmScore;
 	}
 
 	public void setFilmScore(String filmScore) {
+
 		this.filmScore = filmScore;
 	}
 
 
 	public String getFilmDirector() {
+		if(filmDirector == null) filmDirector ="";
 		return filmDirector;
 	}
 
 	public void setFilmDirector(String filmDirector) {
+
 		this.filmDirector = filmDirector;
 	}
 
 	public String getFilmScreenWriter() {
+		if(filmScreenWriter == null) filmScreenWriter ="";
 		return filmScreenWriter;
 	}
 
 	public void setFilmScreenWriter(String filmScreenWriter) {
+
 		this.filmScreenWriter = filmScreenWriter;
 	}
 
 	public LinkedHashMap<String, String> getTorrentDownloadList() {
+
 		return torrentDownloadList;
 	}
 

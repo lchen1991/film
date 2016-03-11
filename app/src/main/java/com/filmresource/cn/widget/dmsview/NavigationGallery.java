@@ -41,7 +41,7 @@ public class NavigationGallery extends LinearLayout {
     private TextView tvName;
     private SpinnerAdapter mAdapter;
     private boolean isRegister = false;
-    private boolean isShowSelecter = true;
+    private boolean isShowSelecter = false;
     private OnItemSelected onItemSelected;
     
     private static int VIEWTYPE_NORMAL = 0x01;

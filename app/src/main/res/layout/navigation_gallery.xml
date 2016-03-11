@@ -9,7 +9,10 @@
         android:layout_height="fill_parent"
         android:soundEffectsEnabled="false"
         android:spacing="0dp"
-        android:unselectedAlpha="100" />
+        android:unselectedAlpha="100"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:id="@+id/ivShade"
@@ -24,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:paddingBottom="8dp"
         android:layout_marginBottom="8dp"
         android:paddingRight="4dp"

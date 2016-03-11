@@ -1,6 +1,7 @@
 package com.filmresource.cn;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,15 +16,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -42,8 +42,8 @@ import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.parser.ResponseDataToJSON;
 import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
-import com.filmresource.cn.utils.DensityUtils;
 import com.filmresource.cn.utils.LogUtil;
+import com.filmresource.cn.utils.ToastUtil;
 import com.filmresource.cn.widget.dmsview.LoopGalleryAdapter;
 import com.filmresource.cn.widget.dmsview.NavigationGallery;
 import com.google.gson.Gson;
@@ -66,9 +66,6 @@ public class MainActivity extends NetBaseActivity
     ViewPager viewPager;
     private Context mContext;
 
-    // 广告位
-    @Bind(R.id.product_list_layout)
-     LinearLayout dmsLayout;
     @Bind(R.id.product_ttd_vp)
      NavigationGallery dmsVp;
     private ActiveAdapter activeAdapter;
@@ -124,12 +121,10 @@ public class MainActivity extends NetBaseActivity
                 return false;
             }
         });
-        int dmsHeight = ((Constant.screenH - DensityUtils.dp2px(this, 17)) * 2 / 6);
-        dmsVp.getLayoutParams().height = dmsHeight;
 
-          OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
-          getObjectSamples.asyncGetObjectSample();
-            showLoadProgressDialog();
+        OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
+        getObjectSamples.asyncGetObjectSample();
+        showLoadProgressDialog();
 
         RequestManager.getInstance().setParser(new ResponseDataToJSON());
         addGetNetRequest("http://api.m.mtime.cn/PageSubArea/TrailerList.api",null,this, TrailerList.class,false,R.id.request_top_trailer);
@@ -190,7 +185,6 @@ public class MainActivity extends NetBaseActivity
 
         Snackbar.make(drawer, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-
         return true;
     }
 
@@ -251,10 +245,17 @@ public class MainActivity extends NetBaseActivity
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     Trailer info = (Trailer) parent.getAdapter().getItem(position);
-//                    Intent intent = new Intent(FoundActivity.this.getActivity(),FmPlayListAndDetial.class);
-//                    intent.putExtra("contentId", info.getId());
-//                    intent.putExtra("isvip",false);
-//                    startActivity(intent);intent
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        String type = "video/* ";
+                        Uri uri = Uri.parse(info.getUrl());
+                        intent.setDataAndType(uri, type);
+                        startActivity(intent);
+                    }catch (Exception e)
+                    {
+                        ToastUtil.showLong(mContext, info.getVideoTitle());
+                    }
+
                 }
 
             });
@@ -303,18 +304,21 @@ public class MainActivity extends NetBaseActivity
             final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = new SimpleDraweeView(mContext);
-                ((SimpleDraweeView) convertView).setScaleType(ImageView.ScaleType.CENTER_CROP);
-                Gallery.LayoutParams param = new Gallery.LayoutParams(Gallery.LayoutParams.MATCH_PARENT,Gallery.LayoutParams.MATCH_PARENT);
-                convertView.setLayoutParams(param);
-                holder.imageView = (SimpleDraweeView) convertView;
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.top_item_movie,null);
+                holder.imageView = (SimpleDraweeView) convertView.findViewById(R.id.my_image_view);
+                holder.imageView.getLayoutParams().width = Constant.screenW;
+               // holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.textView = (TextView)convertView.findViewById(R.id.item_movie_title);
+                holder.textView.getLayoutParams().width = Constant.screenW;
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             position = this.getRealPosition(position);
             final Trailer info = contents.get(position);
+            holder.imageView.setTag(info.getCoverImg());
             holder.imageView.setImageURI(Uri.parse(info.getCoverImg()));
+            holder.textView.setText(info.getMovieName());
             // 预加载后一张和最后一张
             int nextPosition = nextPosition(position);
             String nextUrl = contents.get(nextPosition).getCoverImg();
@@ -339,6 +343,7 @@ public class MainActivity extends NetBaseActivity
 
         class ViewHolder {
             SimpleDraweeView imageView;
+            TextView textView;
         }
     }
 

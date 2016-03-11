@@ -2,29 +2,27 @@ package com.filmresource.cn;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
-import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.OSSRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.commit451.nativestackblur.NativeStackBlur;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.filmresource.cn.OssData.OssResultListenerX;
-import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.activity.NetBaseActivity;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
@@ -32,20 +30,11 @@ import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.htmlparser.bttiantang.HtmlParseFromBttt;
 import com.filmresource.cn.ui.FilmActivity.SnifferActivity;
 import com.filmresource.cn.utils.DensityUtils;
-import com.filmresource.cn.utils.FileUtils;
 import com.filmresource.cn.utils.LogUtil;
 import com.filmresource.cn.utils.MD5Util;
-import com.filmresource.cn.utils.SDCardUtils;
 import com.filmresource.cn.utils.SPUtils;
 import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.utils.ToastUtil;
-
-import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -75,6 +64,11 @@ public class ScrollingActivity extends NetBaseActivity  {
     @Bind(R.id.detail_share_layout)
     LinearLayout shareLayout;
 
+    @Bind(R.id.top_image)
+    ImageView topImage;
+
+//    @Bind(R.id.top_layout)
+//    LinearLayout topLayout;
     @Bind(R.id.my_image_view)
     SimpleDraweeView simpleDraweeView;
     private Object asynOssData;
@@ -144,6 +138,16 @@ public class ScrollingActivity extends NetBaseActivity  {
         getAsynOssData();
     }
 
+    static Bitmap drawableToBitmap(Drawable drawable,int width,int height) // drawable 转换成bitmap
+    {
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ?Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565;// 取drawable的颜色格式
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);// 建立对应bitmap
+        Canvas canvas = new Canvas(bitmap);// 建立对应bitmap的画布
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);// 把drawable内容画到画布中
+        return bitmap;
+    }
+
     public  void initData()
     {
         try {
@@ -151,6 +155,20 @@ public class ScrollingActivity extends NetBaseActivity  {
            filmInfo = (FilmInfo) bundle.getSerializable("filminfo");
             filmName.setText(filmInfo.getFilmName());
             simpleDraweeView.setImageURI(Uri.parse(filmInfo.getFilmPoster()));
+            Drawable drawable = simpleDraweeView.getDrawable();
+            Bitmap srbm =  drawableToBitmap(drawable,Constant.screenW , Constant.screenH/3);
+            Bitmap bm = NativeStackBlur.process(srbm, 60);
+            topImage.setImageBitmap(bm);
+
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) simpleDraweeView.getLayoutParams();
+            TypedValue tv = new TypedValue();
+            int actionBarHeight = 0;
+            if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            }
+            actionBarHeight = actionBarHeight + DensityUtils.dp2px(this, 8);
+            layoutParams.setMargins(DensityUtils.dp2px(this,20),actionBarHeight,0,0);
+//            simpleDraweeView.getLayoutParams().
             if(!StringUtils.isEmpty(filmInfo.getFimHref()))
             {
                 String key = FILM_FAVORITES + filmInfo.getFimHref();
@@ -166,7 +184,7 @@ public class ScrollingActivity extends NetBaseActivity  {
             }
         }catch (Exception e)
         {
-
+            LogUtil.e("info",e.getMessage());
         }
     }
 

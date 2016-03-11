@@ -12,6 +12,8 @@ import com.filmresource.cn.R;
 import com.filmresource.cn.adapter.base.AdapterBase;
 import com.filmresource.cn.adapter.base.ViewHolderBase;
 import com.filmresource.cn.bean.FilmInfo;
+import com.filmresource.cn.common.Constant;
+import com.filmresource.cn.utils.DensityUtils;
 
 import butterknife.Bind;
 
@@ -55,6 +57,10 @@ public class FilmAdapter extends AdapterBase<FilmInfo> implements View.OnClickLi
         {
             if(filmInfo.getFilmPoster()!=null)
             {
+                int dmsWidth = ((Constant.screenW - DensityUtils.dp2px(mContext, 17)) * 2 / 6);
+                int dmsHeight = ((Constant.screenH - DensityUtils.dp2px(mContext, 17)) * 2 / 9);
+                filmViewHolder.simpleDraweeView.getLayoutParams().width = dmsWidth;
+                filmViewHolder.simpleDraweeView.getLayoutParams().height = dmsHeight;
                 Uri uri = Uri.parse(filmInfo.getFilmPoster());
                 filmViewHolder.simpleDraweeView.setImageURI(uri);
             }

@@ -17,22 +17,17 @@ import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.R;
 import com.filmresource.cn.ScrollingActivity;
-import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.adapter.FilmAdapter;
+import com.filmresource.cn.adapter.base.SpacesItemDecoration;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
-import com.filmresource.cn.fragment.BaseFragment;
 import com.filmresource.cn.fragment.LazyFragment;
 import com.filmresource.cn.global.BaseApplication;
-import com.filmresource.cn.utils.DensityUtils;
 import com.filmresource.cn.utils.LogUtil;
-import com.filmresource.cn.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 
@@ -137,6 +132,7 @@ public  class FilmListFragment extends LazyFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         recyclerView.setAdapter(filmAdapter);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(16));
         swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
                 R.color.holo_orange_light, R.color.holo_red_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

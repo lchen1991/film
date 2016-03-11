@@ -9,7 +9,7 @@
     <color name="holo_orange_light">#ffffbb33</color>
     <color name="holo_red_light">#ffff4444</color>
 
-    <color name="touch_transparent">#44000000</color>
+    <color name="touch_transparent">#66000000</color>
     <color name="touch_highlight">#00000000</color>
 
     <color name="view_press">#8a8a8a8a</color>
