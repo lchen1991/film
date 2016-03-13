@@ -41,9 +41,11 @@ import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.parser.ResponseDataToJSON;
+import com.filmresource.cn.ui.FilmActivity.FilmLikeActivity;
 import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
 import com.filmresource.cn.utils.LogUtil;
 import com.filmresource.cn.utils.ToastUtil;
+import com.filmresource.cn.widget.BlurNavigationDrawer.v7.BlurActionBarDrawerToggle;
 import com.filmresource.cn.widget.dmsview.LoopGalleryAdapter;
 import com.filmresource.cn.widget.dmsview.NavigationGallery;
 import com.google.gson.Gson;
@@ -98,7 +100,7 @@ public class MainActivity extends NetBaseActivity
 //            }
 //        });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        BlurActionBarDrawerToggle toggle = new BlurActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -169,7 +171,9 @@ public class MainActivity extends NetBaseActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera actio
+
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(this, FilmLikeActivity.class));
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -356,7 +360,7 @@ public class MainActivity extends NetBaseActivity
                 List<Trailer> trailers = trailerList.getTrailers();
                 List<Trailer> ts = new ArrayList<Trailer>();
                 Collections.shuffle(trailers);
-                int size = 4 ;
+                int size = 6 ;
                 for (int i = 0;i < size && i < trailers.size();i++)
                 {
                     ts.add(trailers.get(i));

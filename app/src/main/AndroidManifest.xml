@@ -32,6 +32,9 @@
         <activity android:name="com.filmresource.cn.ui.FilmActivity.SnifferActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+        <activity android:name="com.filmresource.cn.ui.FilmActivity.FilmLikeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>
