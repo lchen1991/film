@@ -59,8 +59,6 @@ public class ScrollingActivity extends NetBaseActivity  {
     TextView filmScreenWriter;
     @Bind(R.id.filmStarred)
     TextView filmStarred;
-    @Bind(R.id.downloadlayout)
-    LinearLayout downloadLayout;
     @Bind(R.id.detail_fav_iv)
     ImageView detailFav;
     @Bind(R.id.detail_share_layout)
@@ -300,64 +298,6 @@ public class ScrollingActivity extends NetBaseActivity  {
                 }
             }
             filmScore.setText(filmInfo.getFilmScore());
-            if(filmInfo.getTorrentDownloadList()!=null&&filmInfo.getTorrentDownloadList().size()>0)
-            {
-                downloadLayout.removeAllViews();
-                for (final String torrentName:filmInfo.getTorrentDownloadList().keySet())
-                {
-                    TextView textView = new TextView(this);
-                    textView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-//                            if(htmlParseFromBttt ==null)
-//                            {
-//                                htmlParseFromBttt = new HtmlParseFromBttt();
-//                            }
-//                            String durl = (String) v.getTag();
-//                            int starIndex = durl.indexOf("id=");
-//                            durl = durl.substring(starIndex);
-//                            int endIndex = durl.indexOf("&");
-//                            final String id = durl.substring("id=".length(), endIndex);
-//                            starIndex = durl.indexOf("uhash=");
-//                            final String uhash = durl.substring(starIndex+"uhash=".length(), durl.length());
-//                            final String path = Constant.storagePath+File.separator+torrentName.trim().toString();
-//                            if(FileUtils.isFolderExist(path))
-//                            {
-//                                ToastUtil.showLong(ScrollingActivity.this,"文件已下载！");
-//                                return;
-//                            }
-//
-//                            if(SDCardUtils.isSDCardEnable())
-//                            {
-//                                new Thread()
-//                                {
-//                                    @Override
-//                                    public void run() {
-//
-//                                        FileUtils.makeDirs(path);
-//                                        htmlParseFromBttt.downloadtTorrent(Constant.bttiantang_downloadurl, id, uhash, path);
-//                                        runOnUiThread(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-//                                                ToastUtil.showLong(ScrollingActivity.this,"下载成功！");
-//                                            }
-//                                        });
-//                                    }
-//                                }.start();
-//                                }
-//                            else
-//                            {
-//                                ToastUtil.showLong(ScrollingActivity.this,"磁盘存储不能使用！");
-//                            }
-                        }
-                    });
-                    int padding = DensityUtils.dp2px(this, 10);
-                    textView.setText(torrentName);
-                    textView.setTag(filmInfo.getTorrentDownloadList().get(torrentName));
-                    textView.setPadding(padding, padding, padding, padding);
-                    downloadLayout.addView(textView);
-                }
-            }
 
         }
     }

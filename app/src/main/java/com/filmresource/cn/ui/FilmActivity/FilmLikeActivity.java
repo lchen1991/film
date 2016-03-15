@@ -21,7 +21,7 @@ public class FilmLikeActivity extends NetBaseActivity implements OssResultListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_layout);
+        //setContentView(R.layout.card_layout);
         initView();
     }
 

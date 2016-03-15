@@ -24,7 +24,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:minHeight="80dp"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7">
@@ -40,7 +40,9 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/shaw_bg" />
 
-                <include layout="@layout/film_detail_top" />
+                <include
+
+                    layout="@layout/film_detail_top"/>
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
