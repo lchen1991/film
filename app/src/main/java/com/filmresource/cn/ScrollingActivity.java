@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,6 +65,8 @@ public class ScrollingActivity extends NetBaseActivity  {
     ImageView detailFav;
     @Bind(R.id.detail_share_layout)
     LinearLayout shareLayout;
+    @Bind(R.id.filmScore)
+    TextView filmScore;
 
     @Bind(R.id.top_image)
     ImageView topImage;
@@ -127,6 +131,7 @@ public class ScrollingActivity extends NetBaseActivity  {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
         toolbar.setNavigationIcon(R.drawable.common_back_icon_selector);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +286,20 @@ public class ScrollingActivity extends NetBaseActivity  {
             filmDirector.setText(filmInfo.getFilmDirector());
             filmScreenWriter.setText(filmInfo.getFilmScreenWriter());
             filmStarred.setText(filmInfo.getFilmStarred().toString());
-
+            String score = filmInfo.getFilmScore().trim();
+            if(!StringUtils.isEmpty(score))
+            {
+                int tags = score.indexOf("：");
+                if(tags > -1)
+                {
+                    String[] scores = score.split("：");
+                    if(score.length() > 2)
+                    {
+                        filmInfo.setFilmScore(scores[1]);
+                    }
+                }
+            }
+            filmScore.setText(filmInfo.getFilmScore());
             if(filmInfo.getTorrentDownloadList()!=null&&filmInfo.getTorrentDownloadList().size()>0)
             {
                 downloadLayout.removeAllViews();
@@ -342,5 +360,24 @@ public class ScrollingActivity extends NetBaseActivity  {
             }
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_search:
+                Intent intent = new Intent(this, SnifferActivity.class);
+                intent.putExtra("filmInfo", filmInfo);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

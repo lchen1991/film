@@ -15,26 +15,18 @@ import android.widget.ImageView;
 
 import com.cocosw.bottomsheet.BottomSheet;
 import com.filmresource.cn.R;
-import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.activity.WebViewBaseActivity;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.htmlparser.bttiantang.HtmlParseFromBttt;
-import com.filmresource.cn.utils.ArrayUtils;
 import com.filmresource.cn.utils.FileUtils;
 import com.filmresource.cn.utils.SDCardUtils;
-import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.utils.ToastUtil;
-import com.filmresource.cn.widget.CustomDialog;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -75,12 +67,10 @@ public class SnifferActivity extends WebViewBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setTitle("");
 
-        toolbar.setTitle("Title");
-        toolbar.setSubtitle("Sub");
+        setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.common_back_icon_selector);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

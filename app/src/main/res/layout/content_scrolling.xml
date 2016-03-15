@@ -21,44 +21,11 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="8dip">
-                <!--<LinearLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1.0"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:gravity="center">-->
-                <!--</LinearLayout>-->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/filmName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dip"
-                        android:layout_margin="2dip"/>
-                    <TextView
-                        android:id="@+id/filmClassify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dip"
-                        android:layout_margin="2dip"/>
-                    <TextView
-                        android:id="@+id/filmZone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dip"
-                        android:layout_margin="2dip"/>
-
-                    <TextView
-                        android:id="@+id/filmScreensTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dip"
-                        android:layout_margin="2dip"/>
-
                     <TextView
                         android:id="@+id/filmDirector"
                         android:layout_width="wrap_content"

@@ -14,6 +14,7 @@ import com.filmresource.cn.adapter.base.ViewHolderBase;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.utils.DensityUtils;
+import com.filmresource.cn.utils.StringUtils;
 
 import butterknife.Bind;
 
@@ -64,6 +65,20 @@ public class FilmAdapter extends AdapterBase<FilmInfo> implements View.OnClickLi
                 Uri uri = Uri.parse(filmInfo.getFilmPoster());
                 filmViewHolder.simpleDraweeView.setImageURI(uri);
             }
+            String score = filmInfo.getFilmScore();
+            if(!StringUtils.isEmpty(score))
+            {
+                int tags = score.indexOf("：");
+                if(tags > -1)
+                {
+                    String[] scores = score.split("：");
+                    if(score.length() > 2)
+                    {
+                        filmInfo.setFilmScore(scores[1]);
+                    }
+                }
+            }
+            filmViewHolder.filmScore.setText(filmInfo.getFilmScore());
             filmViewHolder.textView.setText(filmInfo.getFilmName());
             filmViewHolder.itemView.setTag(filmInfo);
         }
@@ -81,6 +96,8 @@ public class FilmAdapter extends AdapterBase<FilmInfo> implements View.OnClickLi
         SimpleDraweeView simpleDraweeView;
         @Bind(R.id.item_movie_title)
         TextView textView;
+        @Bind(R.id.filmScore)
+        TextView filmScore;
         public FilmViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;

@@ -14,9 +14,4 @@
         app:placeholderImage="@drawable/poster_holder_shape"
         />
 
-    <View
-        android:id="@+id/shade"
-        android:layout_width="300dp"
-        android:layout_height="20dp" />
-
 </FrameLayout>

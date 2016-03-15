@@ -1,26 +1,12 @@
 package com.filmresource.cn.ui.FilmActivity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
-import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.R;
 import com.filmresource.cn.activity.NetBaseActivity;
-import com.filmresource.cn.bean.BtHomePageInfo;
-import com.filmresource.cn.bean.FilmInfo;
-import com.filmresource.cn.bean.MovieClassify;
-import com.filmresource.cn.common.Constant;
-import com.filmresource.cn.global.BaseApplication;
-import com.filmresource.cn.widget.CardSlidePanel;
-import com.google.gson.Gson;
-
-import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by chenlei on 16/3/13.
@@ -28,9 +14,9 @@ import butterknife.Bind;
 public class FilmLikeActivity extends NetBaseActivity implements OssResultListener {
 
 
-    private CardSlidePanel.CardSwitchListener cardSwitchListener;
-    @Bind(R.id.image_slide_panel)
-    CardSlidePanel slidePanel;
+//    private CardSlidePanel.CardSwitchListener cardSwitchListener;
+//    @Bind(R.id.image_slide_panel)
+//    CardSlidePanel slidePanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,41 +28,41 @@ public class FilmLikeActivity extends NetBaseActivity implements OssResultListen
 
 
     private void initView() {
-        cardSwitchListener = new CardSlidePanel.CardSwitchListener() {
-
-            @Override
-            public void onShow(int index) {
-            }
-
-            @Override
-            public void onCardVanish(int index, int type) {
-            }
-        };
-        slidePanel.setCardSwitchListener(cardSwitchListener);
-
-
-        OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
-        getObjectSamples.asyncGetObjectSample();
-        showLoadProgressDialog();
+//        cardSwitchListener = new CardSlidePanel.CardSwitchListener() {
+//
+//            @Override
+//            public void onShow(int index) {
+//            }
+//
+//            @Override
+//            public void onCardVanish(int index, int type) {
+//            }
+//        };
+//        slidePanel.setCardSwitchListener(cardSwitchListener);
+//
+//
+//        OssGetObjectData getObjectSamples = new OssGetObjectData(BaseApplication.getInstance().oss, Constant.bucket, Constant.bucketObj, this);
+//        getObjectSamples.asyncGetObjectSample();
+//        showLoadProgressDialog();
 
     }
 
     @Override
     public void onResult(String s) {
 
-        Gson gson = new Gson();
-        final BtHomePageInfo btHomePageInfo = gson.fromJson(s, BtHomePageInfo.class);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                List<FilmInfo> filmInfos = btHomePageInfo.getFilmMapList().get(BtHomePageInfo.BTHOMEPAGE_FILMINFOLIST_HOT);
-                if(filmInfos!=null)
-                {
-                    slidePanel.fillData(filmInfos);
-                }
-                dismissLoadProgressDialog();
-            }
-        });
+//        Gson gson = new Gson();
+//        final BtHomePageInfo btHomePageInfo = gson.fromJson(s, BtHomePageInfo.class);
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                List<FilmInfo> filmInfos = btHomePageInfo.getFilmMapList().get(BtHomePageInfo.BTHOMEPAGE_FILMINFOLIST_HOT);
+//                if(filmInfos!=null)
+//                {
+//                    slidePanel.fillData(filmInfos);
+//                }
+//                dismissLoadProgressDialog();
+//            }
+//        });
 
     }
 
