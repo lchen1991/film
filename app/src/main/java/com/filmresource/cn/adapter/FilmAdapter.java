@@ -23,11 +23,11 @@ import butterknife.Bind;
  */
 public class FilmAdapter extends AdapterBase<FilmInfo> implements View.OnClickListener{
 
-    public FilmAdapter(Context mContext) {
-      this.mContext = mContext;
-    }
-
     public  onRecyclerViewItemClick onRecyclerViewItemClick;
+
+    public FilmAdapter(Context mContext) {
+        super(mContext);
+    }
 
     public void setOnRecyclerViewItemClick(onRecyclerViewItemClick onRecyclerViewItemClick)
     {

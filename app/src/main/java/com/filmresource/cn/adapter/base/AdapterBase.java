@@ -1,20 +1,20 @@
 package com.filmresource.cn.adapter.base;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class AdapterBase<T> extends RecyclerView.Adapter<ViewHolderBase> {
 
 	protected Context mContext;
 	protected List<T> mList = new LinkedList<T>();
 
-	public AdapterBase() {
+	public AdapterBase(Context mContext) {
+		this.mContext = mContext;
 	}
 
 	public List<T> getList() {

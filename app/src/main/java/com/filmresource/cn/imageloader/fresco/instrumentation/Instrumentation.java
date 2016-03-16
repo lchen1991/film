@@ -13,9 +13,6 @@
 package com.filmresource.cn.imageloader.fresco.instrumentation;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.View;
 
 import com.facebook.common.internal.Preconditions;
@@ -38,9 +35,9 @@ public class Instrumentation {
     CANCELLATION,
   }
 
-  private final Paint mPaint;
-  private final Rect mTextRect;
-  private final View mView;
+//  private final Paint mPaint;
+//  private final Rect mTextRect;
+//  private final View mView;
 
   private PerfListener mPerfListener;
   private long mStartTime;
@@ -49,9 +46,9 @@ public class Instrumentation {
   private ImageRequestState mState;
 
   public Instrumentation(View view) {
-    mPaint = new Paint();
-    mTextRect = new Rect();
-    mView = view;
+//    mPaint = new Paint();
+//    mTextRect = new Rect();
+//    mView = view;
     mState = ImageRequestState.NOT_STARTED;
   }
 
@@ -104,28 +101,28 @@ public class Instrumentation {
 
   /** Draws overlay with request state for easier visual inspection. */
   public void onDraw(final Canvas canvas) {
-    mPaint.setColor(0xC0000000);
-    mTextRect.set(0, 0, mView.getWidth(), 35);
-    canvas.drawRect(mTextRect, mPaint);
-
-    mPaint.setColor(Color.WHITE);
-    canvas.drawText("[" + mTag + "]", 10, 15, mPaint);
-
-    String message = "Not started";
-    switch (mState) {
-      case STARTED:
-        message = "Loading...";
-        break;
-      case SUCCESS:
-        message = "Loaded after " + (mFinishTime - mStartTime) + "ms";
-        break;
-      case FAILURE:
-        message = "Failed after " + (mFinishTime - mStartTime) + "ms";
-        break;
-      case CANCELLATION:
-        message = "Cancelled after " + (mFinishTime - mStartTime) + "ms";
-        break;
-    }
-    canvas.drawText(message, 10, 30, mPaint);
+//    mPaint.setColor(0xC0000000);
+//    mTextRect.set(0, 0, mView.getWidth(), 35);
+//    canvas.drawRect(mTextRect, mPaint);
+//
+//    mPaint.setColor(Color.WHITE);
+//    canvas.drawText("[" + mTag + "]", 10, 15, mPaint);
+//
+//    String message = "Not started";
+//    switch (mState) {
+//      case STARTED:
+//        message = "Loading...";
+//        break;
+//      case SUCCESS:
+//        message = "Loaded after " + (mFinishTime - mStartTime) + "ms";
+//        break;
+//      case FAILURE:
+//        message = "Failed after " + (mFinishTime - mStartTime) + "ms";
+//        break;
+//      case CANCELLATION:
+//        message = "Cancelled after " + (mFinishTime - mStartTime) + "ms";
+//        break;
+//    }
+//    canvas.drawText(message, 10, 30, mPaint);
   }
 }

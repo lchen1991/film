@@ -17,12 +17,13 @@ import com.filmresource.cn.OssData.OssGetObjectData;
 import com.filmresource.cn.OssData.OssResultListener;
 import com.filmresource.cn.R;
 import com.filmresource.cn.ScrollingActivity;
-import com.filmresource.cn.adapter.FilmAdapter;
+import com.filmresource.cn.adapter.FilmListAdapter;
 import com.filmresource.cn.adapter.base.SpacesItemDecoration;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.fragment.LazyFragment;
 import com.filmresource.cn.global.BaseApplication;
+import com.filmresource.cn.imageloader.fresco.instrumentation.PerfListener;
 import com.filmresource.cn.utils.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,7 +37,8 @@ import butterknife.Bind;
  */
 public  class FilmListFragment extends LazyFragment {
 
-    private FilmAdapter filmAdapter = null;
+    private FilmListAdapter filmAdapter = null;
+    private PerfListener perfListener;
     @Bind(R.id.swipe_layout)
     protected SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recyclerView)
@@ -128,7 +130,8 @@ public  class FilmListFragment extends LazyFragment {
 
     @Override
     protected void setUpView() {
-        filmAdapter = new FilmAdapter(mContext);
+        perfListener = new PerfListener();
+        filmAdapter = new FilmListAdapter(mContext,perfListener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         recyclerView.setAdapter(filmAdapter);
@@ -141,7 +144,7 @@ public  class FilmListFragment extends LazyFragment {
                 ossGetObjectData.asyncGetObjectSample();
             }
         });
-        filmAdapter.setOnRecyclerViewItemClick(new FilmAdapter.onRecyclerViewItemClick() {
+        filmAdapter.setOnRecyclerViewItemClick(new FilmListAdapter.onRecyclerViewItemClick() {
             @Override
             public void setOnItemClick(View v, FilmInfo filmInfo) {
 

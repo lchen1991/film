@@ -41,7 +41,6 @@
                     android:src="@drawable/shaw_bg" />
 
                 <include
-
                     layout="@layout/film_detail_top"/>
             </FrameLayout>
 

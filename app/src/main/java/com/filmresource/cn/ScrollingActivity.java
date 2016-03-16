@@ -8,9 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,14 +22,22 @@ import com.alibaba.sdk.android.oss.model.OSSRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.filmresource.cn.activity.NetBaseActivity;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.htmlparser.bttiantang.HtmlParseFromBttt;
 import com.filmresource.cn.ui.FilmActivity.SnifferActivity;
-import com.filmresource.cn.utils.DensityUtils;
 import com.filmresource.cn.utils.LogUtil;
 import com.filmresource.cn.utils.MD5Util;
 import com.filmresource.cn.utils.SPUtils;
@@ -69,9 +75,7 @@ public class ScrollingActivity extends NetBaseActivity  {
     @Bind(R.id.top_image)
     ImageView topImage;
 
-//    @Bind(R.id.top_layout)
-//    LinearLayout topLayout;
-    @Bind(R.id.my_image_view)
+    @Bind(R.id.detail_image_view)
     SimpleDraweeView simpleDraweeView;
     private Object asynOssData;
     private HtmlParseFromBttt htmlParseFromBttt;
@@ -158,20 +162,46 @@ public class ScrollingActivity extends NetBaseActivity  {
            filmInfo = (FilmInfo) bundle.getSerializable("filminfo");
             filmName.setText(filmInfo.getFilmName());
             simpleDraweeView.setImageURI(Uri.parse(filmInfo.getFilmPoster()));
-            Drawable drawable = simpleDraweeView.getDrawable();
-            Bitmap srbm =  drawableToBitmap(drawable,Constant.screenW , Constant.screenH/3);
-            Bitmap bm = NativeStackBlur.process(srbm, 60);
-            topImage.setImageBitmap(bm);
 
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) simpleDraweeView.getLayoutParams();
-            TypedValue tv = new TypedValue();
-            int actionBarHeight = 0;
-            if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
-                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            }
-            actionBarHeight = actionBarHeight + DensityUtils.dp2px(this, 8);
-            layoutParams.setMargins(DensityUtils.dp2px(this,20),actionBarHeight,0,0);
-//            simpleDraweeView.getLayoutParams().
+            ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(filmInfo.getFilmPoster()))
+                    .setProgressiveRenderingEnabled(true)
+                                    .build();
+
+            ImagePipeline imagePipeline = Fresco.getImagePipeline();
+
+            DataSource<CloseableReference<CloseableImage>>
+                    dataSource = imagePipeline.fetchDecodedImage(imageRequest, ScrollingActivity.this);
+
+            dataSource.subscribe(new BaseBitmapDataSubscriber() {
+                                     @Override
+                                     public void onNewResultImpl(final Bitmap bitmap) {
+
+                                         runOnUiThread(new Runnable() {
+                                             @Override
+                                             public void run() {
+                                                 Bitmap bm = NativeStackBlur.process(bitmap, 2);
+                                                 topImage.setImageBitmap(bm);
+                                             }
+                                         });
+                                     }
+
+                                     @Override
+                                     public void onFailureImpl(DataSource dataSource) {
+                                         // No cleanup required here.
+                                     }
+                                 },
+                    CallerThreadExecutor.getInstance());
+//            topImage.setImageResource(R.drawable.film_title_bg);
+
+
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) simpleDraweeView.getLayoutParams();
+//            TypedValue tv = new TypedValue();
+//            int actionBarHeight = 0;
+//            if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+//                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+//            }
+//            actionBarHeight = actionBarHeight + DensityUtils.dp2px(this, 8);
+//            layoutParams.setMargins(DensityUtils.dp2px(this,20),actionBarHeight,0,0);
             if(!StringUtils.isEmpty(filmInfo.getFimHref()))
             {
                 String key = FILM_FAVORITES + filmInfo.getFimHref();
