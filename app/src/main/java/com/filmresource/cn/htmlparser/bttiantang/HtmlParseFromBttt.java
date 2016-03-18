@@ -3,6 +3,19 @@ package com.filmresource.cn.htmlparser.bttiantang;
 import android.content.Context;
 import android.os.Looper;
 
+import com.filmresource.cn.bean.BtHomePageInfo;
+import com.filmresource.cn.bean.FilmInfo;
+import com.filmresource.cn.bean.MovieClassify;
+import com.filmresource.cn.htmlparser.douban.HtmlParseFromDouBan;
+import com.filmresource.cn.utils.FileUtils;
+import com.filmresource.cn.utils.ToastUtil;
+import com.google.gson.Gson;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -19,19 +32,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.filmresource.cn.bean.BtHomePageInfo;
-import com.filmresource.cn.bean.FilmInfo;
-import com.filmresource.cn.bean.MovieClassify;
-import com.filmresource.cn.utils.FileUtils;
-import com.filmresource.cn.utils.ToastUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class HtmlParseFromBttt {
 
@@ -151,6 +151,15 @@ public class HtmlParseFromBttt {
 						filmInfo.setFilmPoster(mFilmPic);
 					}
 					filmInfo.setFimHref(mBaaseUrl + mDetailUrl);
+				}
+			}
+			if(filmInfo.getFilmName()!=null && filmInfo.getFilmName().length() >0)
+			{
+				String[] names =  filmInfo.getFilmName().split("/");
+				if(names.length > 1)
+				{
+					System.out.println("电影名称："+names[0]);
+					new HtmlParseFromDouBan().searChFilmInfo(filmInfo,names[0]);
 				}
 			}
 			mFilmInfos.add(filmInfo);
