@@ -1,5 +1,6 @@
 package com.filmresource.cn.bean;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -61,6 +62,10 @@ public class FilmInfo extends BaseEntity{
 	}
 
 	public List<String> getFilmClassify() {
+		if(filmClassify == null)
+		{
+			filmClassify = new ArrayList<String>();
+		}
 		return filmClassify;
 	}
 
@@ -142,6 +147,10 @@ public class FilmInfo extends BaseEntity{
 
 
 	public String getFilmDirector() {
+		if(filmDirector == null)
+		{
+			filmDirector = "";
+		}
 		return filmDirector;
 	}
 

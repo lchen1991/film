@@ -4,10 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +37,7 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.filmresource.cn.activity.NetBaseActivity;
+import com.filmresource.cn.adapter.GalleryAdapter;
 import com.filmresource.cn.bean.FilmInfo;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
@@ -43,6 +48,8 @@ import com.filmresource.cn.utils.MD5Util;
 import com.filmresource.cn.utils.SPUtils;
 import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.utils.ToastUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -65,6 +72,8 @@ public class ScrollingActivity extends NetBaseActivity  {
     TextView filmScreenWriter;
     @Bind(R.id.filmStarred)
     TextView filmStarred;
+    @Bind(R.id.filmSynopsis)
+    TextView filmSynopsis;
     @Bind(R.id.detail_fav_iv)
     ImageView detailFav;
     @Bind(R.id.detail_share_layout)
@@ -79,6 +88,12 @@ public class ScrollingActivity extends NetBaseActivity  {
     SimpleDraweeView simpleDraweeView;
     private Object asynOssData;
     private HtmlParseFromBttt htmlParseFromBttt;
+
+    @Bind(R.id.toolbar_layout)
+    CollapsingToolbarLayout toolbarLayout;
+
+    @Bind(R.id.rv_film_imags)
+    RecyclerView rv_film_imags;
 
     @OnClick({R.id.detail_share_layout,R.id.detail_fav_layout,R.id.sniffer_go})
     public void onClick(View v)
@@ -131,7 +146,17 @@ public class ScrollingActivity extends NetBaseActivity  {
         setContentView(R.layout.activity_scrolling);
         initData();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        if(filmInfo!=null && !StringUtils.isEmpty(filmInfo.getFilmName()))
+        {
+            toolbarLayout.setTitle(filmInfo.getFilmName());
+        }
+        else
+        {
+            toolbarLayout.setTitle("");
+        }
+        //通过CollapsingToolbarLayout修改字体颜色
+        toolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.view_normal));//设置还没收缩时状态下字体颜色
+        toolbarLayout.setCollapsedTitleTextColor(Color.WHITE);//设置收缩后Toolbar上字体的颜色
         setSupportActionBar(toolbar);
 
         toolbar.setNavigationIcon(R.drawable.common_back_icon_selector);
@@ -143,6 +168,7 @@ public class ScrollingActivity extends NetBaseActivity  {
         });
 
         getAsynOssData();
+
     }
 
     static Bitmap drawableToBitmap(Drawable drawable,int width,int height) // drawable 转换成bitmap
@@ -308,12 +334,15 @@ public class ScrollingActivity extends NetBaseActivity  {
         {
             filmName.setText(filmInfo.getFilmName());
             simpleDraweeView.setImageURI(Uri.parse(filmInfo.getFilmPoster()));
-            filmClassify.setText(filmInfo.getFilmClassify().toString());
-            filmZone.setText(filmInfo.getFilmZone());
-            filmScreensTime.setText(filmInfo.getFilmScreensTime());
-            filmDirector.setText(filmInfo.getFilmDirector());
-            filmScreenWriter.setText(filmInfo.getFilmScreenWriter());
-            filmStarred.setText(filmInfo.getFilmStarred().toString());
+
+            filmClassify.setText("类型：" + filmInfo.getFilmClassify().toString());
+            filmZone.setText("地区："+filmInfo.getFilmZone());
+            filmScreensTime.setText("时间："+filmInfo.getFilmScreensTime());
+
+            filmDirector.setText(""+filmInfo.getFilmDirector());
+            filmScreenWriter.setText(""+filmInfo.getFilmScreenWriter());
+            filmStarred.setText(""+filmInfo.getFilmStarred().toString());
+            filmSynopsis.setText(""+filmInfo.getFilmSynopsis());
             String score = filmInfo.getFilmScore().trim();
             if(!StringUtils.isEmpty(score))
             {
@@ -328,6 +357,11 @@ public class ScrollingActivity extends NetBaseActivity  {
                 }
             }
             filmScore.setText(filmInfo.getFilmScore());
+
+            if(filmInfo.getFilmImages()!=null&&filmInfo.getFilmImages().size()>0)
+            {
+                initMaterialLeanBackView(filmInfo.getFilmImages());
+            }
 
         }
     }
@@ -350,4 +384,16 @@ public class ScrollingActivity extends NetBaseActivity  {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void initMaterialLeanBackView(List<String> filmImages)
+    {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rv_film_imags.setLayoutManager(linearLayoutManager);
+        GalleryAdapter  mAdapter = new GalleryAdapter(this);
+        rv_film_imags.setAdapter(mAdapter);
+        mAdapter.appendToList(filmImages);
+    }
+
 }

@@ -148,7 +148,7 @@ public  class FilmListFragment extends LazyFragment {
             @Override
             public void setOnItemClick(View v, FilmInfo filmInfo) {
 
-                if(TextUtils.isEmpty(filmInfo.getFimHref()))
+                if(filmInfo == null ||TextUtils.isEmpty(filmInfo.getFimHref()))
                 {
                     Snackbar.make(mainView, "资源不存在!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

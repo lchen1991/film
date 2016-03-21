@@ -63,7 +63,7 @@ public class HtmlParseFromDouBan {
 			}
 			else
 			{
-				System.out.println("查询失败！");
+				System.out.println("查询失败！--"+connection.getResponseCode());
 			}
 			
 		} catch (Exception e) {
@@ -101,10 +101,10 @@ public class HtmlParseFromDouBan {
 				if("导演".equals(tag))
 				{
 					tag = "编剧";
-					String director = sub.replace(tag, "");
-					if(director!=null&&!director.equals(filmInfo.getFilmDirector()))
+					String director = sub.replace(tag, "").trim();
+					if(director!=null&&!director.equals(filmInfo.getFilmDirector().trim()))
 					{
-						return null;
+						return filmInfo;
 					}
 					filmInfo.setFilmDirector(director);
 					System.out.println("导演：" + filmInfo.getFilmDirector());
@@ -198,6 +198,7 @@ public class HtmlParseFromDouBan {
 					mImages.add(eImg.attr("src"));
 					System.out.println(eImg.attr("src"));
 				}
+				filmInfo.setFilmImages(mImages);
 			}
 		
 		} catch (IOException e) {

@@ -14,4 +14,5 @@
 
     <color name="view_press">#8a8a8a8a</color>
     <color name="view_normal">#00000000</color>
+    <color name="background">#00000000</color>
 </resources>

@@ -153,15 +153,7 @@ public class HtmlParseFromBttt {
 					filmInfo.setFimHref(mBaaseUrl + mDetailUrl);
 				}
 			}
-			if(filmInfo.getFilmName()!=null && filmInfo.getFilmName().length() >0)
-			{
-				String[] names =  filmInfo.getFilmName().split("/");
-				if(names.length > 1)
-				{
-					System.out.println("电影名称："+names[0]);
-					new HtmlParseFromDouBan().searChFilmInfo(filmInfo,names[0]);
-				}
-			}
+
 			mFilmInfos.add(filmInfo);
 		}
 		return mFilmInfos;
@@ -234,7 +226,7 @@ public class HtmlParseFromBttt {
 					{
 						if("又名".equals(lisTag))
 						{
-							filmInfo.setFilmName(lis[1]);
+							//filmInfo.setFilmName(lis[1]);
 						}
 						else if("标签".equals(lisTag))
 						{
@@ -279,6 +271,15 @@ public class HtmlParseFromBttt {
 				downloadTorrentList.put(title, mBaaseUrl+href);
 			}
 			filmInfo.setTorrentDownloadList(downloadTorrentList);
+			if(filmInfo.getFilmName()!=null && filmInfo.getFilmName().length() >0)
+			{
+				String[] names =  filmInfo.getFilmName().split("/");
+				if(names.length > 0)
+				{
+					System.out.println("电影名称："+names[0]);
+					new HtmlParseFromDouBan().searChFilmInfo(filmInfo,names[0]);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

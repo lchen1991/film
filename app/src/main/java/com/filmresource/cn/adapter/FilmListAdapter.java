@@ -98,7 +98,7 @@ public class FilmListAdapter extends AdapterBase<FilmInfo> implements View.OnCli
     public void onBindViewHolder(ViewHolderBase holder, int position) {
         FilmViewHolder filmViewHolder = (FilmViewHolder) holder;
         FilmInfo filmInfo = mList.get(position);
-        if (filmInfo != null) {
+        if (filmInfo != null && filmInfo.getFimHref()!=null) {
             ImageRequest imageRequest =
                     ImageRequestBuilder.newBuilderWithSource(Uri.parse(filmInfo.getFilmPoster()))
                             .setResizeOptions(

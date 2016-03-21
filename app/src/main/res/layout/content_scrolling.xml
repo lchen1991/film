@@ -16,29 +16,71 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="8dip">
+
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/filmDirector"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:textSize="16dip"/>
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_film_imags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="导演："
+                            android:layout_margin="2dip"
+                            android:textSize="18dip"/>
+
+                        <TextView
+                            android:id="@+id/filmDirector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dip"
+                            android:textSize="16dip"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="编剧："
+                            android:layout_margin="2dip"
+                            android:textSize="18dip"/>
                     <TextView
                         android:id="@+id/filmScreenWriter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:textSize="16dip"/>
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="主演："
+                            android:layout_margin="2dip"
+                            android:textSize="18dip"/>
 
                     <TextView
                         android:id="@+id/filmStarred"
@@ -46,8 +88,15 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:textSize="16dip"/>
-                </LinearLayout>
+                        </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/filmSynopsis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dip"
+                        android:textSize="16dip"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
