@@ -48,6 +48,7 @@ import com.filmresource.cn.utils.MD5Util;
 import com.filmresource.cn.utils.SPUtils;
 import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.utils.ToastUtil;
+import com.filmresource.cn.widget.WrappingLinearLayoutManager;
 
 import java.util.List;
 
@@ -388,9 +389,11 @@ public class ScrollingActivity extends NetBaseActivity  {
 
     public void initMaterialLeanBackView(List<String> filmImages)
     {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        WrappingLinearLayoutManager linearLayoutManager = new WrappingLinearLayoutManager(this);
+        linearLayoutManager.setOrientation(WrappingLinearLayoutManager.HORIZONTAL);
         rv_film_imags.setLayoutManager(linearLayoutManager);
+        rv_film_imags.setNestedScrollingEnabled(false);
+        rv_film_imags.setHasFixedSize(false);
         GalleryAdapter  mAdapter = new GalleryAdapter(this);
         rv_film_imags.setAdapter(mAdapter);
         mAdapter.appendToList(filmImages);
