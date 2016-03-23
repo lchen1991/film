@@ -164,5 +164,9 @@ public  class FilmListFragment extends LazyFragment {
         });
     }
 
-
+    @Override
+    public void onDestroyView() {
+        filmAdapter.shutDown();
+        super.onDestroyView();
+    }
 }
