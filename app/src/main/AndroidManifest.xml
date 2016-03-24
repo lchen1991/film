@@ -17,6 +17,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--友盟设置 start-->
+        <meta-data android:value="56d4ff11e0f55ab6de0022c0" android:name="UMENG_APPKEY"/>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!--友盟设置 end-->
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

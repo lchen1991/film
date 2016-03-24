@@ -48,6 +48,8 @@ import com.filmresource.cn.widget.BlurNavigationDrawer.v7.BlurActionBarDrawerTog
 import com.filmresource.cn.widget.dmsview.LoopGalleryAdapter;
 import com.filmresource.cn.widget.dmsview.NavigationGallery;
 import com.google.gson.Gson;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UpdateConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +86,9 @@ public class MainActivity extends NetBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UpdateConfig.setDebug(true);
+        UmengUpdateAgent.update(this);
+
         mContext = this;
         Fresco.initialize(this);
         setContentView(R.layout.activity_main);
