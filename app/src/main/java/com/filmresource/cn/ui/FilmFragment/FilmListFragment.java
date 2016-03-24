@@ -131,6 +131,7 @@ public  class FilmListFragment extends LazyFragment {
     @Override
     protected void setUpView() {
         perfListener = new PerfListener();
+
         filmAdapter = new FilmListAdapter(mContext,perfListener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
@@ -166,7 +167,7 @@ public  class FilmListFragment extends LazyFragment {
 
     @Override
     public void onDestroyView() {
-        filmAdapter.shutDown();
+//        filmAdapter.shutDown();
         super.onDestroyView();
     }
 }

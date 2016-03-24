@@ -307,7 +307,7 @@ public class MainActivity extends NetBaseActivity
             final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.top_item_movie,null);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.top_item_movie,parent,false);
                 holder.imageView = (SimpleDraweeView) convertView.findViewById(R.id.my_image_view);
                 holder.imageView.getLayoutParams().width = Constant.screenW;
                // holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

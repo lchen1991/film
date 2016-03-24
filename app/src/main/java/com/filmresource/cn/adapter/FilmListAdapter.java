@@ -75,7 +75,7 @@ public class FilmListAdapter extends AdapterBase<FilmInfo> implements View.OnCli
 
     @Override
     public ViewHolderBase onCreateViewHolder(ViewGroup parent, int viewType) {
-        View mItemView = LayoutInflater.from(mContext).inflate(R.layout.item_movie, null);
+        View mItemView = LayoutInflater.from(mContext).inflate(R.layout.item_movie, parent,false);
         FilmViewHolder viewHolder = new FilmViewHolder(mItemView);
         GenericDraweeHierarchy gdh = new GenericDraweeHierarchyBuilder(mContext.getResources())
 //                .setPlaceholderImage(Drawables.sPlaceholderDrawable)
@@ -175,8 +175,8 @@ public class FilmListAdapter extends AdapterBase<FilmInfo> implements View.OnCli
         void setOnItemClick(View v, FilmInfo filmInfo);
     }
 
-    public void shutDown() {
-        super.clear();
-        Fresco.shutDown();
-    }
+//    public void shutDown() {
+//        super.clear();
+//        Fresco.shutDown();
+//    }
 }
