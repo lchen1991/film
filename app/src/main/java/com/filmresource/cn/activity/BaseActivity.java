@@ -2,26 +2,18 @@ package com.filmresource.cn.activity;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.sdk.android.oss.ClientException;
-import com.alibaba.sdk.android.oss.ServiceException;
-import com.alibaba.sdk.android.oss.model.OSSRequest;
-import com.facebook.common.logging.FLog;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.filmresource.cn.OssData.OssResultListenerX;
 import com.filmresource.cn.R;
 import com.filmresource.cn.bean.BaseUI;
 import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
-import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.widget.CustomDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -104,4 +96,12 @@ public class BaseActivity extends AppCompatActivity implements BaseUI {
 		}
 	}
 
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

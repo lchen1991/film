@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -48,8 +49,12 @@ import com.filmresource.cn.widget.BlurNavigationDrawer.v7.BlurActionBarDrawerTog
 import com.filmresource.cn.widget.dmsview.LoopGalleryAdapter;
 import com.filmresource.cn.widget.dmsview.NavigationGallery;
 import com.google.gson.Gson;
+import com.umeng.onlineconfig.OnlineConfigAgent;
+import com.umeng.onlineconfig.OnlineConfigLog;
+import com.umeng.onlineconfig.UmengOnlineConfigureListener;
 import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UpdateConfig;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,8 +82,7 @@ public class MainActivity extends NetBaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                Snackbar.make(view, "Replace with your own adapterction", Snackbar.LENGTH_LONG)
-                       .setAction("Action", null).show();
+                FeedbackAPI.openFeedbackActivity(this);
                 break;
         }
     }
@@ -86,7 +90,7 @@ public class MainActivity extends NetBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UpdateConfig.setDebug(true);
+
         UmengUpdateAgent.update(this);
 
         mContext = this;
@@ -133,7 +137,10 @@ public class MainActivity extends NetBaseActivity
         showLoadProgressDialog();
 
         RequestManager.getInstance().setParser(new ResponseDataToJSON());
-        addGetNetRequest("http://api.m.mtime.cn/PageSubArea/TrailerList.api",null,this, TrailerList.class,false,R.id.request_top_trailer);
+        addGetNetRequest("http://api.m.mtime.cn/PageSubArea/TrailerList.api", null, this, TrailerList.class, false, R.id.request_top_trailer);
+
+        onInitOnlineConfig(this);
+
     }
 
     @Override
@@ -379,5 +386,20 @@ public class MainActivity extends NetBaseActivity
     @Override
     public void onNetResponseError(String errorMsg, String url, int actionId) {
         super.onNetResponseError(errorMsg, url, actionId);
+    }
+
+    public void onInitOnlineConfig(Context mContext)
+    {
+        OnlineConfigAgent.getInstance().updateOnlineConfig(mContext);
+        String value = OnlineConfigAgent.getInstance().getConfigParams(mContext, "filmurl");
+        OnlineConfigLog.e("OnlineConfig", "json=" + value);
+        UmengOnlineConfigureListener configureListener = new UmengOnlineConfigureListener() {
+            @Override
+            public void onDataReceived(JSONObject json) {
+                // TODO Auto-generated method stub
+                OnlineConfigLog.e("OnlineConfig", "json=" + json);
+            }
+        };
+        OnlineConfigAgent.getInstance().setOnlineConfigListener(configureListener);
     }
 }

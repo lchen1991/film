@@ -1,25 +1,19 @@
 package com.filmresource.cn.activity;
-import java.lang.reflect.InvocationTargetException;
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 
 import com.filmresource.cn.R;
-import com.filmresource.cn.activity.BaseActivity;
 import com.filmresource.cn.utils.LogUtil;
 import com.filmresource.cn.utils.NetWorkUtils;
 
@@ -105,7 +99,7 @@ public class WebViewBaseActivity extends BaseActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
 		LogUtil.e("WebViewBaseActivity", "onPause");
 //		mWebView.pauseTimers();
@@ -116,7 +110,7 @@ public class WebViewBaseActivity extends BaseActivity {
 //		doMethod("onPause");
 	}
 
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 //		mWebView.resumeTimers();
 //		doMethod("onResume");
