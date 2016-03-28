@@ -28,6 +28,24 @@ android {
             abiFilters "armeabi"
         }
     }
+
+    signingConfigs {
+        debug {
+            //debug也用正式证书编译，方便调试分享等
+            storeFile file("../filmkeystore.jks")
+            storePassword "cl351275883"
+            keyAlias "film"
+            keyPassword "cl351275883"
+        }
+
+        release {
+            storeFile file("../filmkeystore.jks")
+            storePassword "cl351275883"
+            keyAlias "film"
+            keyPassword "cl351275883"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -41,6 +59,12 @@ android {
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile (name:'feedbackSdk',ext:'aar')

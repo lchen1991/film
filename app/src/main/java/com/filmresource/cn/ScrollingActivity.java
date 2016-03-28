@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -49,6 +49,11 @@ import com.filmresource.cn.utils.SPUtils;
 import com.filmresource.cn.utils.StringUtils;
 import com.filmresource.cn.utils.ToastUtil;
 import com.filmresource.cn.widget.WrappingLinearLayoutManager;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.List;
 
@@ -106,8 +111,52 @@ public class ScrollingActivity extends NetBaseActivity  {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
-                            case R.id.qq:
-                                //q.toast("Help me!");
+                            case R.id.weixin:
+                                ToastUtil.showShort(ScrollingActivity.this,"微信分享！");
+                                UMImage image = new UMImage(ScrollingActivity.this,filmInfo.getFilmPoster());
+                                new ShareAction(ScrollingActivity.this)
+                                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                                        .setCallback(new UMShareListener() {
+                                            @Override
+                                            public void onResult(SHARE_MEDIA platform) {
+                                                Toast.makeText(ScrollingActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void onError(SHARE_MEDIA platform, Throwable t) {
+                                                Toast.makeText(ScrollingActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void onCancel(SHARE_MEDIA platform) {
+                                                Toast.makeText(ScrollingActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .withText(filmInfo.getFilmTitle())
+                                        .withTargetUrl("http://www.baidu.com")
+                                        .withMedia(image)
+                                        .share();
+                                break;
+                            case R.id.weixin_friends:
+                                UMImage image_quan = new UMImage(ScrollingActivity.this,filmInfo.getFilmPoster());
+                                new ShareAction(ScrollingActivity.this)
+                                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                        .setCallback(new UMShareListener() {
+                                            @Override
+                                            public void onResult(SHARE_MEDIA platform) {
+                                                Toast.makeText(ScrollingActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void onError(SHARE_MEDIA platform, Throwable t) {
+                                                Toast.makeText(ScrollingActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void onCancel(SHARE_MEDIA platform) {
+                                                Toast.makeText(ScrollingActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .withText(filmInfo.getFilmTitle())
+                                        .withTargetUrl("http://www.baidu.com")
+                                        .withMedia(image_quan)
+                                        .share();
                                 break;
                         }
                     }
@@ -399,4 +448,9 @@ public class ScrollingActivity extends NetBaseActivity  {
         mAdapter.appendToList(filmImages);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        UMShareAPI.get(this).onActivityResult( requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

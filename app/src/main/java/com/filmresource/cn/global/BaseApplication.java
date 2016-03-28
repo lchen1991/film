@@ -14,6 +14,7 @@ import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.fragment.BaseFragment;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.utils.LogUtil;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class BaseApplication extends Application{
 		Map<String,String> customUI = new HashMap<String,String>();
 		customUI.put("themeColor","#33444b");
 		FeedbackAPI. setUICustomInfo(customUI);
+		initOnShare();
 		super.onCreate();
 	}
 	public static BaseApplication getInstance()
@@ -96,6 +98,16 @@ public class BaseApplication extends Application{
 		oss = new OSSClient(getApplicationContext(),Constant.endpoint, credentialProvider, conf);
 
 		LogUtil.e("info",oss.toString());
+	}
+
+	private void initOnShare()
+	{
+		PlatformConfig.setWeixin("wxe209a32608094b8b","f2737767202521407c3e269bca0ec9bc");
+		//微信 appid appsecret
+//		PlatformConfig.setSinaWeibo("3921700954","04b48b094faeb16683c32669824ebdad");
+		//新浪微博 appkey appsecret
+//		PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+		// QQ和Qzone appid appkey
 	}
 
 }
