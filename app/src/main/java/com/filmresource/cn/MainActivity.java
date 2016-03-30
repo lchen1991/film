@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
@@ -41,6 +42,7 @@ import com.filmresource.cn.common.Constant;
 import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.parser.ResponseDataToJSON;
+import com.filmresource.cn.ui.FilmActivity.AuthActivity;
 import com.filmresource.cn.ui.FilmActivity.FilmLikeActivity;
 import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
 import com.filmresource.cn.utils.LogUtil;
@@ -78,11 +80,17 @@ public class MainActivity extends NetBaseActivity
      NavigationGallery dmsVp;
     private ActiveAdapter activeAdapter;
 
-    @OnClick(R.id.fab)
+    DrawerLayout drawer;
+
+    @OnClick({R.id.fab})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
                 FeedbackAPI.openFeedbackActivity(this);
+                break;
+            case R.id.tv_user_name:
+            case R.id.iv_user_face:
+
                 break;
         }
     }
@@ -107,7 +115,7 @@ public class MainActivity extends NetBaseActivity
 //
 //            }
 //        });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         BlurActionBarDrawerToggle toggle = new BlurActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -115,6 +123,8 @@ public class MainActivity extends NetBaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ImageView iv_user_face = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user_face);
 
 //        ((Button)findViewById(R.id.btn)).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -141,6 +151,13 @@ public class MainActivity extends NetBaseActivity
 
         onInitOnlineConfig(this);
 
+        iv_user_face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AuthActivity.class));
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
     }
 
     @Override

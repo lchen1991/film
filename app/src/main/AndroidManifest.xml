@@ -110,11 +110,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
+
         <activity android:name="com.filmresource.cn.ui.FilmActivity.SnifferActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name="com.filmresource.cn.ui.FilmActivity.FilmLikeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name="com.filmresource.cn.ui.FilmActivity.AuthActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

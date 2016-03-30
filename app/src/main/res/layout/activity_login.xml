@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="10.0dip">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="89.0dip"
+            android:layout_height="87.0dip"
+            android:src="@drawable/ic_launcher" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/btn_qq_fast_login"
+            android:layout_width="fill_parent"
+            android:layout_height="45.0dip"
+            android:layout_marginBottom="24.0dip"
+            android:layout_marginLeft="27.0dip"
+            android:layout_marginRight="27.0dip"
+            android:background="@drawable/btn_qq_login_selector">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="QQ登录"
+                android:textColor="@android:color/white"
+                android:textSize="16.5dip" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="14.0dip"
+                android:layout_height="14.5dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.0dip"
+                android:src="@drawable/icon_qq" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_weixin_login"
+            android:layout_width="fill_parent"
+            android:layout_height="45.0dip"
+            android:layout_marginBottom="24.0dip"
+            android:layout_marginLeft="27.0dip"
+            android:layout_marginRight="27.0dip"
+            android:background="@drawable/btn_weixin_login_selector">
+
+            <TextView
+                android:id="@id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="微信登录"
+                android:textColor="@android:color/white"
+                android:textSize="16.5dip" />
+
+            <ImageView
+                android:id="@+id/iv_weixin"
+                android:layout_width="19.0dip"
+                android:layout_height="15.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10.0dip"
+                android:src="@drawable/icon_weixin" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_sina_login"
+            android:layout_width="fill_parent"
+            android:layout_height="45.0dip"
+            android:layout_marginBottom="24.0dip"
+            android:layout_marginLeft="27.0dip"
+            android:layout_marginRight="27.0dip"
+            android:background="@drawable/btn_sina_login_selector">
+
+            <TextView
+                android:id="@id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="新浪登录"
+                android:textColor="@android:color/white"
+                android:textSize="16.5dip" />
+
+            <ImageView
+                android:id="@+id/iv_sina"
+                android:layout_width="19.0dip"
+                android:layout_height="15.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10.0dip"
+                android:src="@drawable/icon_weixin" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="18.0dip"
+        android:layout_weight="1.0"
+        android:drawableRight="@drawable/jiantou_selector"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:padding="10.0dip"
+        android:text="跳过直接进入 "
+        android:textColor="#ff999999"
+        android:textSize="16.5dip" />
+</LinearLayout>
