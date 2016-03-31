@@ -119,7 +119,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10.0dip"
-                android:src="@drawable/icon_weixin" />
+                android:src="@drawable/icon_sinalogin" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -9,7 +9,7 @@
  * Copyright (c) 2006 by INSPUR LG, Inc.
  * All rights reserved.
  */
-package com.base.app.utils;
+package com.filmresource.cn.utils;
 
 import java.io.Serializable;
 import java.text.ParseException;

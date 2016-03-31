@@ -43,6 +43,7 @@ import com.filmresource.cn.global.BaseApplication;
 import com.filmresource.cn.net.manager.RequestManager;
 import com.filmresource.cn.net.parser.ResponseDataToJSON;
 import com.filmresource.cn.ui.FilmActivity.AuthActivity;
+import com.filmresource.cn.ui.FilmActivity.DownListActivity;
 import com.filmresource.cn.ui.FilmActivity.FilmLikeActivity;
 import com.filmresource.cn.ui.FilmFragment.FilmListFragment;
 import com.filmresource.cn.utils.LogUtil;
@@ -197,8 +198,9 @@ public class MainActivity extends NetBaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_downloadlist) {
             // Handle the camera actio
+            startActivity(new Intent(this, DownListActivity.class));
 
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(this, FilmLikeActivity.class));

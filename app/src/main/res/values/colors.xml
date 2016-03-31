@@ -16,4 +16,6 @@
     <color name="view_normal">#00000000</color>
     <color name="background">#00000000</color>
     <color name="white">#ffffffff</color>
+
+    <color name="listselector">#eeeeee</color>
 </resources>
